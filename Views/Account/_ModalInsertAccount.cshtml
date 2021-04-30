@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "_ModalInsertAccount";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="txtModalAccount">Nueva Cuenta</h5>
+                <label onclick="closeModal()" style="cursor:pointer;">X</label>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control mb-2"  id="txtNameAccount" placeholder="Nombre" />
+                    @*<select class="form-control">
+                        <option value="1">Global</option>
+                        <option value="2">Detalle</option>
+
+                    </select>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="closeModal()">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="add()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

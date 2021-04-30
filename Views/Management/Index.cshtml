@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="container h-100">
+    <h1 class="text-center pt-5 pb-3">Administración de Gestión</h1>
+    <div class="row h-100 justify-content-center align-items-center flex-column">
+        <div class="card w-100">
+            <div class="card-header">
+                Busca una Gestión
+            </div>
+            <div class="card-body">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary"  data-toggle="tooltip" data-placement="top" 
+ data-bs-toggle="modal" title="Nueva Gestion" onclick="openModalManagement()" >
+                    +
+                </button>
+                 <a class="btn  btn-secondary"  data-toggle="tooltip" data-placement="top" 
+                 title="Reporte de Gestion" href="http://192.168.100.8/Report/report/Report%20Account/ReportManagement?idCompany=@ViewBag.idCompany"  
+                    target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-print"></i></span></a>
+                <table id="tblManagement" class="table table-hover" style="cursor:pointer;">
+                    <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+@Html.Partial("_ModalManagementSave")
+<script src="~/Scripts/system/Management/Validations.js"></script>
+<script src="~/Scripts/system/Management/Management.js"></script>

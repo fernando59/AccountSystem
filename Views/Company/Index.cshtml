@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+<meta charset="utf-8">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
+ <!-- Font Awesome -->
+    <link href="~/Content/theme/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- overlayScrollbars -->
+    <link href="~/Content/theme/dist/css/adminlte.min.css" rel="stylesheet" />
+
+
+
+
+
+    <link href="~/Content/theme/plugins/iziToast/iziToast.min.css" rel="stylesheet" />
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link href="~/Content/theme/dist/css/all-skins.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-autofill/css/autoFill.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-fixedcolumns/css/fixedColumns.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-rowgroup/css/rowGroup.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-rowreorder/css/rowReorder.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-scroller/css/scroller.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-select/css/select.bootstrap4.min.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/plugins/select2/css/select2.min.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/plugins/tabslet/tabslet.css" rel="stylesheet" />
+
+    <script src="~/Content/theme/plugins/jquery/jquery.min.js"></script>
+    <link href="~/Content/theme/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!--  Bootstrap treeview-->
+    @*<script src="~/Content/theme/plugins/bootstrap-treeview/css/bootstrap-treeview.min.css"></script>*@
+
+    <link href="~/Content/theme/plugins/bootstrap-treeview/css/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Content/theme/plugins/bootstrap-treeview/js/bootstrap-treeview.min.js"></script>
+
+    <!--  Bootstrap treeview 2 -->
+    <link href="~/Content/theme/plugins/TreeView/css/gijgo.css" rel="stylesheet" />
+    <script src="~/Content/theme/plugins/TreeView/js/gijgo.js"></script>
+
+    <script src="~/Scripts/system/Global.js"></script>
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .s{
+        float:right;
+        padding:20px;
+    }
+</style>
+<title>AccountingSystem</title>
+
+    <div class="s">
+
+    <a href="@Url.Action("Index", "Login")" class="nav-link">
+        Salir
+    </a>
+    <!--   @using (Html.BeginForm("Salir", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+            @Html.AntiForgeryToken()
+        <a class="nav-link" role="button"
+           href="javascript:document.getElementById('logoutForm').submit()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesion
+        </a>}-->
+    </div>
+<div class="container h-100">
+
+    @*<button class="btn btn-primary" onclick="report()">Report</button>*@
+    <div class="row h-100 justify-content-center align-items-center flex-column">
+        <h1 class="pb-5">Seleccionar una empresa</h1>
+        <div class="card w-100">
+            <div class="card-header">
+                Buscar empresas
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-primary" onclick="openModalForm()">
+                   <i class="fas fa-plus"></i>
+                </button>
+                        <a class="btn  btn-primary "  data-toggle="tooltip" data-placement="top" title="Reporte de Empresa" href="http://192.168.100.8/Report/report/Report%20Account/ReportCompany"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
+                <table id="tblCompany" class="table table-hover" style="cursor:pointer; height:300px;">
+                    <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Nit</th>
+                            <th>Sigla</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+@Html.Partial("_ModalCompanySelect")
+
+
+    <script src="~/Content/theme/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/theme/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Content/theme/dist/js/demo.js"></script>
+
+    <script src="~/Content/theme/plugins/iziToast/iziToast.min.js"></script>
+    <script src="~/Content/theme/plugins/select2/js/select2.min.js"></script>
+
+    <script src="~/Content/theme/plugins/blockUI/jquery.blockUI.js"></script>
+    <script src="~/Content/theme/plugins/tabslet/jquery.tabslet.js"></script>
+    <script src="~/Content/theme/plugins/sweetalert2/sweetalert2.js"></script>
+    <script src="~/Content/theme/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <script src="~/Content/theme/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/Content/theme/plugins/datatables-autofill/js/dataTables.autoFill.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-fixedcolumns/js/dataTables.fixedColumns.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-rowgroup/js/dataTables.rowGroup.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-rowreorder/js/dataTables.rowReorder.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-select/js/dataTables.select.min.js"></script>
+    <script src="~/Content/theme/plugins/tabslet/jquery.tabslet.js"></script>
+<script src="~/Scripts/system/Company.js"></script>

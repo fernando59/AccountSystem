@@ -1,0 +1,401 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Contable</title>
+
+    <!-- Font Awesome -->
+    <link href="~/Content/theme/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- overlayScrollbars -->
+    <link href="~/Content/theme/dist/css/adminlte.min.css" rel="stylesheet" />
+
+
+
+
+
+    <link href="~/Content/theme/plugins/iziToast/iziToast.min.css" rel="stylesheet" />
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link href="~/Content/theme/dist/css/all-skins.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-autofill/css/autoFill.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-fixedcolumns/css/fixedColumns.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-rowgroup/css/rowGroup.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-rowreorder/css/rowReorder.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-scroller/css/scroller.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/datatables-select/css/select.bootstrap4.min.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/plugins/select2/css/select2.min.css" rel="stylesheet" />
+
+    <link href="~/Content/theme/plugins/tabslet/tabslet.css" rel="stylesheet" />
+
+    <script src="~/Content/theme/plugins/jquery/jquery.min.js"></script>
+    <link href="~/Content/theme/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!--  Bootstrap treeview-->
+    @*<script src="~/Content/theme/plugins/bootstrap-treeview/css/bootstrap-treeview.min.css"></script>*@
+
+    <link href="~/Content/theme/plugins/bootstrap-treeview/css/bootstrap-treeview.min.css" rel="stylesheet" />
+    <script src="~/Content/theme/plugins/bootstrap-treeview/js/bootstrap-treeview.min.js"></script>
+
+    <!--  Bootstrap treeview 2 -->
+    <link href="~/Content/theme/plugins/TreeView/css/gijgo.css" rel="stylesheet" />
+    @*<link href="~/Content/theme/plugins/TreeView/fonts/gijgo.material.svg" rel="stylesheet" />*@
+    <script src="~/Content/theme/plugins/TreeView/js/gijgo.js"></script>
+
+    <script src="~/Scripts/system/Global.js"></script>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .error{
+            background:red;
+            color:#fff;
+            border-radius:20px;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+
+
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                    @if(Session["company"] != null)
+                    {
+                        AccountingSystem.Models.Company company = (AccountingSystem.Models.Company)Session["company"];
+                       <h1>@company.nameCompany</h1>
+                    }
+                    else
+                    {
+                        <h2>Error</h2>
+                    }
+            </ul>
+
+            <!-- SEARCH FORM -->
+            @*<form class="form-inline ml-3">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>*@
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <a href="@Url.Action("Index","Company")" class="nav-link">Cambiar de Empresa</a>
+                </li>
+                          <li class="nav-item">
+                                     <a href="@Url.Action("Index", "Login")" class="nav-link">
+                        Salir
+                    </a>
+                    <!--   @using (Html.BeginForm("Salir", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+            @Html.AntiForgeryToken()
+        <a class="nav-link" role="button"
+           href="javascript:document.getElementById('logoutForm').submit()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesion
+        </a>}-->
+
+                </li>
+            </ul>
+        </nav>
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-info  elevation-4">
+            <!-- Brand Logo -->
+            <a href="~/Home/Index" class="brand-link">
+                <img src="~/Content/theme/dist/img/AdminLTELogo.png"
+                     alt="AdminLTE Logo"
+                     class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">Sistema Contable</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/Content/theme/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                      @if (Session["user"] != null)
+                        {
+
+                            AccountingSystem.Models.User user = (AccountingSystem.Models.User)@Session["user"];
+
+
+            <a href="#" class="d-block">@user.nameUser </a> }
+                        else
+                        {
+            <a href="#" class="d-block">Usuario</a>}
+                    </div>
+
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        @*<li class="nav-item">
+                            <a href="~/Home/Index" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>
+                                    Configuraciones
+                                </p>
+                            </a>
+                        </li>*@
+                        <li class="nav-item has-treeview menu-close">
+                            <a href="#" class="nav-link ">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Configuraciones
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="~/Management/Index" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Gestion</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="~/Account/Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Modenas</p>
+                                    </a>
+                                </li>
+                                 
+                                @*<li class="nav-item">
+                                    <a href="./index3.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>s </p>
+                                    </a>
+                                </li>*@
+                            </ul>
+                            </li>
+
+                            <li  class="nav-item has-treeview menu-close">
+
+                            <a href="#" class="nav-link ">
+                                    <i class="nav-icon fas fa-coins"></i>
+                                <p>
+                                    Contabilidad 
+                                     <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                              <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="~/Account/Index" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Plan de Cuentas</p>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item">
+                                    <a href="~/Report/ManagementReport" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Gestiones</p>
+                                    </a>
+                                </li>
+                                 
+                                <li class="nav-item">
+                                    <a href="/Report/PeriodReport" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Periodos </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./index3.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Plan de Cuentas</p>
+                                    </a>
+                                </li>*@
+                            </ul>
+
+
+                        </li>
+                        @*<li class="nav-item">
+                            <a href="@Url.Action("Index", "Management")" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>
+                                    Gestiones
+                                </p>
+                            </a>
+                        </li>*@
+                        <!-- Add icons to the links using the .nav-icon class
+    with font-awesome or any other icon font library -->
+                        @*<li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Dashboard
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="~/Content/theme/index.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dashboard v1</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Content/theme/index2.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dashboard v2</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="~/Content/theme/index3.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dashboard v3</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="../widgets.html" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Widgets
+                    <span class="right badge badge-danger">New</span>
+                </p>
+            </a>
+        </li>
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                    Layout Options
+                    <i class="fas fa-angle-left right"></i>
+                    <span class="badge badge-info right">6</span>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="../layout/top-nav.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Top Navigation</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../layout/top-nav-sidebar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Top Navigation + Sidebar</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../layout/boxed.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Boxed</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../layout/fixed-sidebar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Fixed Sidebar</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../layout/fixed-topnav.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Fixed Navbar</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../layout/fixed-footer.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Fixed Footer</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../layout/collapsed-sidebar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Collapsed Sidebar</p>
+                    </a>
+                </li>
+            </ul>
+        </li>*@
+                        @*  @Html.Partial("_Menu")*@
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper pb-4">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; @DateTime.Now.Year</strong>
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- jQuery -->
+    <script src="~/Content/theme/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/theme/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Content/theme/dist/js/demo.js"></script>
+
+    <script src="~/Content/theme/plugins/iziToast/iziToast.min.js"></script>
+    <script src="~/Content/theme/plugins/select2/js/select2.min.js"></script>
+
+    <script src="~/Content/theme/plugins/blockUI/jquery.blockUI.js"></script>
+    <script src="~/Content/theme/plugins/tabslet/jquery.tabslet.js"></script>
+    <script src="~/Content/theme/plugins/sweetalert2/sweetalert2.js"></script>
+    <script src="~/Content/theme/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <script src="~/Content/theme/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/Content/theme/plugins/datatables-autofill/js/dataTables.autoFill.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-fixedcolumns/js/dataTables.fixedColumns.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-rowgroup/js/dataTables.rowGroup.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-rowreorder/js/dataTables.rowReorder.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="~/Content/theme/plugins/datatables-select/js/dataTables.select.min.js"></script>
+    <script src="~/Content/theme/plugins/tabslet/jquery.tabslet.js"></script>
+    <!--  Bootstrap treeview-->
+    @*<script src="~/Content/theme/plugins/bootstrap-treeview/css/bootstrap-treeview.min.css"></script>*@
+    <script src="~/Content/theme/plugins/bootstrap-treeview/js/bootstrap-treeview.min.js"></script>
+
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

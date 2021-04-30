@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DateSetReport" targetNamespace="http://tempuri.org/DateSetReport.xsd" xmlns:mstns="http://tempuri.org/DateSetReport.xsd" xmlns="http://tempuri.org/DateSetReport.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DateSetReport" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DateSetReport" msprop:Generator_UserDSName="DateSetReport">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Companies" msprop:Generator_TableClassName="CompaniesDataTable" msprop:Generator_TableVarName="tableCompanies" msprop:Generator_TablePropName="Companies" msprop:Generator_RowDeletingName="CompaniesRowDeleting" msprop:Generator_RowChangingName="CompaniesRowChanging" msprop:Generator_RowEvHandlerName="CompaniesRowChangeEventHandler" msprop:Generator_RowDeletedName="CompaniesRowDeleted" msprop:Generator_UserTableName="Companies" msprop:Generator_RowChangedName="CompaniesRowChanged" msprop:Generator_RowEvArgName="CompaniesRowChangeEvent" msprop:Generator_RowClassName="CompaniesRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IdCompany" msprop:Generator_ColumnVarNameInTable="columnIdCompany" msprop:Generator_ColumnPropNameInRow="IdCompany" msprop:Generator_ColumnPropNameInTable="IdCompanyColumn" msprop:Generator_UserColumnName="IdCompany" type="xs:string" minOccurs="0" />
+              <xs:element name="nameCompany" msprop:Generator_ColumnVarNameInTable="columnnameCompany" msprop:Generator_ColumnPropNameInRow="nameCompany" msprop:Generator_ColumnPropNameInTable="nameCompanyColumn" msprop:Generator_UserColumnName="nameCompany" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataTable2" msprop:Generator_TableClassName="DataTable2DataTable" msprop:Generator_TableVarName="tableDataTable2" msprop:Generator_TablePropName="DataTable2" msprop:Generator_RowDeletingName="DataTable2RowDeleting" msprop:Generator_RowChangingName="DataTable2RowChanging" msprop:Generator_RowEvHandlerName="DataTable2RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable2RowDeleted" msprop:Generator_UserTableName="DataTable2" msprop:Generator_RowChangedName="DataTable2RowChanged" msprop:Generator_RowEvArgName="DataTable2RowChangeEvent" msprop:Generator_RowClassName="DataTable2Row">
+          <xs:complexType>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
