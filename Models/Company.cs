@@ -18,5 +18,6 @@ namespace AccountingSystem.Models
         public int levels { get; set; }
         public int state { get; set; }
         public int idUser { get; set; }
+        public int idCurrency { get; set; }
     }
 }

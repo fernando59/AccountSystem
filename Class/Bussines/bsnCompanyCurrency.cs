@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Class.Models;
+﻿using AccountingSystem.Class.Global;
+using AccountingSystem.Class.Models;
 using AccountingSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -9,19 +10,26 @@ namespace AccountingSystem.Class.Bussines
 {
     public class bsnCompanyCurrency
     {
-        public class bsnAccount
-        {
 
-            private clsCompanyCurrency classAccount = new clsCompanyCurrency();
-            //public List<CompanyAccount> getAccounts(int idUser,int idCompany)
-            //{
-            //   return classAccount.getAccounts(idUser,idCompany);
-            //}
+            private clsCompanyCurrency classCompanyCurrency = new clsCompanyCurrency();
             public CompanyCurrency insertAccount(CompanyCurrency companyCurrency)
             {
-                return classAccount.insertCompanyCurrency(companyCurrency);
+                return classCompanyCurrency.insertCompanyCurrency(companyCurrency);
             }
+          public List<CompanyCurrency> getCompanyCurrency(int idCompany,int idUser)
+          {
+            return classCompanyCurrency.getCompanyCurrency(idCompany,idUser);
+          }
+          public string getCurrency(int idCompany,int idUser)
+          {
+            return classCompanyCurrency.getCurrency(idCompany,idUser);
+          }
+          public Response addCompanyCurrency(CompanyCurrency companyCurrency)
+          {
+            return classCompanyCurrency.addCompanyCurrency(companyCurrency);
+          }
 
-        }
+
+
     }
 }

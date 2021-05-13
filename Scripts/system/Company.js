@@ -35,6 +35,7 @@ function getData() {
     let email = $('#txtEmailCompany').val()
     let addressCompany = $('#txtAddressCompany').val()
     let levels = $('#dropdownLevel').val()
+    let idCurrency = $("#dropdownCurrency").val()
     let idUser = 1
 
     return {
@@ -46,7 +47,9 @@ function getData() {
         email,
         addressCompany,
         levels,
-        idUser
+        idUser,
+        idCurrency
+
     }
 }
 function setData(data) {

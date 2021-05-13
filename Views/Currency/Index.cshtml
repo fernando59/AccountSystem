@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center p-3">Moneda</h2>
+<div class="container">
+
+    @*<button class="btn btn-primary" onclick="report()">Report</button>*@
+    <div class="row h-100 justify-content-center align-items-center flex-column">
+        <div class="card p-5">
+
+            <div class="row">
+                <div class="col">
+                    <label>
+                        Moneda Principal
+                    </label>
+                    <input type="text" value="-" readonly id="txtCurrencyMainTitle" class="form-control" />
+
+                </div>
+                <div class="col">
+
+                    <label>Tipo de Cambio</label>
+                    <input type="number" id="txtExchange" value="" class="form-control" step="0.01" placeholder='0.00' />
+                </div>
+                <div class="col">
+                    <label>Moneda Alternavita</label>
+                    <select class="form-control form-control-sm" id="dropdownCurrency" style="width:100%; ">
+                    </select>
+                </div>
+                <div class="col d-flex justify-content-center align-items-center">
+                    <button type="button" class="btn btn-primary" onclick="addCompanyCurrency()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+
+
+                </div>
+            </div>
+            <div class="card-body">
+
+            <table id="tblCurrency" class="table table-hover" style="cursor:pointer; height:300px; width:1100px;">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Moneda Principal</th>
+                        <th>Moneda Alternativa</th>
+                        <th>Tipo de Cambio</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_ModalCreateCurrency")
+<script src="~/Scripts/system/Currency/Currency.js"></script>

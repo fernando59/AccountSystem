@@ -48,6 +48,10 @@
     <link href="~/Content/theme/plugins/bootstrap-treeview/css/bootstrap-treeview.min.css" rel="stylesheet" />
     <script src="~/Content/theme/plugins/bootstrap-treeview/js/bootstrap-treeview.min.js"></script>
 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js" integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
+
     <!--  Bootstrap treeview 2 -->
     <link href="~/Content/theme/plugins/TreeView/css/gijgo.css" rel="stylesheet" />
     @*<link href="~/Content/theme/plugins/TreeView/fonts/gijgo.material.svg" rel="stylesheet" />*@
@@ -60,10 +64,11 @@
             -webkit-appearance: none;
             margin: 0;
         }
-        .error{
-            background:red;
-            color:#fff;
-            border-radius:20px;
+
+        .error {
+            background: red;
+            color: #fff;
+            border-radius: 20px;
         }
     </style>
 </head>
@@ -180,18 +185,17 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="~/Account/Index" class="nav-link">
+                                    <a href="~/Currency/Index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Modenas</p>
                                     </a>
                                 </li>
-                                 
-                                @*<li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
+                               <li class="nav-item">
+                                    <a href="~/Voucher/List" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>s </p>
+                                        <p>Comprobantes </p>
                                     </a>
-                                </li>*@
+                                </li>
                             </ul>
                             </li>
 
