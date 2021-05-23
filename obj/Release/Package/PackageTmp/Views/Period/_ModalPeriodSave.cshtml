@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "_ModalPeriodSave";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalPeriodSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo Periodo </h5>
+                <strong onclick="closeModalPeriod()" style="cursor:pointer;">X</strong>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                     <label for="txtNamePeriod">
+                                Nombre
+                     </label>
+
+                    <input type="text"  class="form-control" placeholder="Nombre" id="txtNamePeriod" autocomplete="off"/>
+                </div>
+                 <div class="form-group">
+                     <label for="txtPeriodStart">Fecha Inicio</label>
+                    <input type="date"  class="form-control"  id="txtPeriodStart"/>
+                </div>
+                <div class="form-group">
+                    <label for="txtPeriodEnd">Fecha Fin</label>
+                    <input type="date"  class="form-control"  id="txtPeriodEnd"/>
+                </div>
+
+
+
+            </div>
+            <hr />
+            <div class="text-center pb-4">
+                <button type="button" class="btn btn-danger" onclick="closeModalPeriod()">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="savePeriod()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

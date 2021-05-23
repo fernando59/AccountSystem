@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "_ModalManagementSave";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalManagementSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="txtTitleCompanyModal">Nueva Gestión</h5>
+                <strong onclick="closeModalManagement()" style="cursor:pointer;">X</strong>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                     <label for="txtNameManagement">
+                                Nombre
+                     </label>
+
+                    <input type="text"  class="form-control" placeholder="Nombre" id="txtNameManagement" autocomplete="off"/>
+                </div>
+                 <div class="form-group">
+                     <label for="txtManagementStart">Fecha Inicio</label>
+                    <input type="date"  class="form-control" placeholder="Nombre" id="txtManagementStart"/>
+                </div>
+                <div class="form-group">
+                    <label for="txtManagementEnd">Fecha Fin</label>
+                    <input type="date"  class="form-control" placeholder="Nombre" id="txtManagementEnd"/>
+                </div>
+
+
+
+            </div>
+            <hr />
+            <div class="text-center pb-4">
+                <button type="button" class="btn btn-danger" onclick="closeModalManagement()">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="saveManagement()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

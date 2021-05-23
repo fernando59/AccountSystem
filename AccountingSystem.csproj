@@ -2366,6 +2366,11 @@
     <Content Include="Reports\DateSetReport.xsc">
       <DependentUpon>DateSetReport.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\sistemaERPFernando - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\sistemaERPFernando - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\sistemaERPFernando - Web Deploy.pubxml" />
     <None Include="Reports\DateSetReport.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>

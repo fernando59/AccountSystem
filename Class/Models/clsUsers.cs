@@ -70,6 +70,7 @@ namespace AccountingSystem.Class.Models
             var response = new Response();
             using (var sqlConnection = new SqlConnection(conexion))
             {
+
                 var user = sqlConnection.Query<User>("select * from tblUsers where userAccount = @userAccount and state = 1", new { userAccount = userAccount }, commandType: System.Data.CommandType.Text).FirstOrDefault();
                 if (user != null)
                 {

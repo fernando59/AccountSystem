@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="container h-100">
+
+   @* <h1 class="text-center pt-5 pb-3" id="lblTitle">Administración de Periodo </h1>*@
+
+  @if(Session["management"] != null)
+                    {
+                        AccountingSystem.Models.Management management= (AccountingSystem.Models.Management)Session["management"];
+                       <h1 class="text-center pt-5 pb-3">Administración de Periodo - @management.nameManagement</h1>
+                    }
+                    else
+                    {
+                        <h2>Error</h2>
+                    }
+
+
+    <div class="row h-100 justify-content-center align-items-center flex-column">
+        <div class="card w-100">
+            <div class="card-header">
+                Busca un Periodo
+            </div>
+            <div class="card-body">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="openModalPeriod()" >
+                    +
+                </button>
+                 <a class="btn  btn-secondary"  data-toggle="tooltip" data-placement="top" 
+                 title="Reporte de Periodo" href="http://192.168.100.8/Report/report/Report%20Account/ReportPeriods?idCompany=@ViewBag.idCompany&idManagement=@ViewBag.idManagement"  
+                    target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-print"></i></span></a>
+
+                <table id="tblPeriod" class="table table-hover" style="cursor:pointer;">
+                    <thead>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+@Html.Partial("_ModalPeriodSave")
+<script src="~/Scripts/system/Periods/Periods.js"></script>
+<script src="~/Scripts/system/Periods/Validations.js"></script>
+

@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center">List</h2>
+
+<div class="container">
+
+    @*<button class="btn btn-primary" onclick="report()">Report</button>*@
+    <div class="row h-100 justify-content-center align-items-center flex-column">
+
+<a href="~/Voucher/Index" class="btn btn-primary">+</a>
+    <table id="tblVoucher" class="table table-hover" style="cursor:pointer; height:300px; width:1100px;">
+                <thead>
+                    <tr>
+                        <th>Serie</th>
+                        <th>Tipo</th>
+                        <th>Moneda</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+<script src="~/Scripts/system/VoucherDetail/VoucherDetail.js"></script>

@@ -215,25 +215,44 @@
                                         <p>Plan de Cuentas</p>
                                     </a>
                                 </li>
-                                @*<li class="nav-item">
-                                    <a href="~/Report/ManagementReport" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Gestiones</p>
-                                    </a>
-                                </li>
-                                 
                                 <li class="nav-item">
-                                    <a href="/Report/PeriodReport" class="nav-link">
+                          @if (Session["company"] != null)
+                        {
+
+                            AccountingSystem.Models.Company company= (AccountingSystem.Models.Company)@Session["company"];
+
+
+                                    <a href="http://192.168.100.8/Report/report/Report%20Account/ReportDiaryBook?idCompany=@company.idCompany" class="nav-link" target="_blank">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Periodos </p>
+                                        <p>Libro Diario</p>
                                     </a>
+                       }
+                                </li>
+                                
+                                <li class="nav-item">
+
+                          @if (Session["company"] != null)
+            {
+
+                            AccountingSystem.Models.Company company= (AccountingSystem.Models.Company)@Session["company"];
+                                    <a href="http://192.168.100.8/Report/report/Report%20Account/ReportLedger?idCompany=@company.idCompany" class="nav-link" target="_blank">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Libro Mayor </p>
+                                    </a>
+            }
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
+               @if (Session["company"] != null)
+               {
+
+                   AccountingSystem.Models.Company company = (AccountingSystem.Models.Company)@Session["company"];
+
+                                    <a href="http://192.168.100.8/Report/report/Report%20Account/ReportSumsAndBalance?idCompany=@company.idCompany" class="nav-link" target="_blank">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Plan de Cuentas</p>
+                                        <p>Sumas y Saldos  </p>
                                     </a>
-                                </li>*@
+               }
+                                </li>
                             </ul>
 
 

@@ -43,10 +43,10 @@ namespace AccountingSystem.Class.Models
                     int idCompany =Convert.ToInt32(respuesta);
                     string codeAccountInsert = string.Concat(Enumerable.Repeat(".0", company.levels-1));
                     string codeAccountInsertSecond = string.Concat(Enumerable.Repeat(".0", company.levels-2));
-                    string sqlInsertAccount1 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('1"+codeAccountInsert+"','Activo',1,2,1,"+idCompany+",null)";
-                    string sqlInsertAccount2 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('2"+codeAccountInsert+"','Pasivo',1,2,1,"+idCompany+",null)";
-                    string sqlInsertAccount3 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('3"+codeAccountInsert+"','Patrimonio',1,2,1,"+idCompany+",null)";
-                    string sqlInsertAccount4 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('4"+codeAccountInsert+"','Ingresos',1,2,1,"+idCompany+",null)";
+                    string sqlInsertAccount1 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('1"+codeAccountInsert+"','Activo',1,1,1,"+idCompany+",null)";
+                    string sqlInsertAccount2 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('2"+codeAccountInsert+"','Pasivo',1,1,1,"+idCompany+",null)";
+                    string sqlInsertAccount3 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('3"+codeAccountInsert+"','Patrimonio',1,1,1,"+idCompany+",null)";
+                    string sqlInsertAccount4 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('4"+codeAccountInsert+"','Ingresos',1,1,1,"+idCompany+",null)";
                     string sqlInsertAccount5 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values (@codeAccount,@nameAccount,@levelAccount,@typeAccount,@idUser,@idCompany,null) SELECT SCOPE_IDENTITY()";
                     connection.Execute(sqlInsertAccount1, transaction: transaction);
                     connection.Execute(sqlInsertAccount2, transaction: transaction);
@@ -62,8 +62,8 @@ namespace AccountingSystem.Class.Models
                     var egresos =connection.ExecuteScalar(sqlInsertAccount5,account1, transaction: transaction);
                     int idEgresos = Convert.ToInt32(egresos);
 
-                    string sqlInsertAccount51 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('5.1"+codeAccountInsertSecond+"','Costos',2,2,1,"+idCompany+","+idEgresos+")";
-                    string sqlInsertAccount52 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('5.2"+codeAccountInsertSecond+"','Gastos',2,2,1,"+idCompany+","+idEgresos+")";
+                    string sqlInsertAccount51 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('5.1"+codeAccountInsertSecond+"','Costos',2,1,1,"+idCompany+","+idEgresos+")";
+                    string sqlInsertAccount52 = "insert into tblAccounts (codeAccount,nameAccount,levelAccount,typeAccount,idUser,idCompany,idAccountFather) values ('5.2"+codeAccountInsertSecond+"','Gastos',2,1,1,"+idCompany+","+idEgresos+")";
                     connection.Execute(sqlInsertAccount51, transaction: transaction);
                     connection.Execute(sqlInsertAccount52, transaction: transaction);
                     company.idCompany = idCompany;

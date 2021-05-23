@@ -2,19 +2,27 @@
 @{
     ViewBag.Title = "Index";
 }
-<div class="container h-100">
+<style>
+    .table-scroll{
+        overflow-y:scroll;
+        overflow-x:hidden;
+        height:260px;
+    }
+</style>
+<div class=" h-100 " style="width:1500px; margin:auto;">
     @*<h1 class="text-center pt-5 pb-3">Administración de Gestión</h1>*@
     <div class="row h-100 justify-content-center align-items-center flex-column">
         <div class="card w-100 p-5">
                <div class="card-header">
-    <h1 class="text-center p-2">Nuevo Comprobante</h1>
+    <h1 class="text-center p-1">Nuevo Comprobante</h1>
                </div>
-                           <div class="card-body">
+              <div class="card-body">
             <div class="form-group text-right">
 
                <button class="btn btn-secondary" onclick="back()"><span class="fas fa-arrow-left" aria-hidden="true"></span></button>
-               <a class="btn  btn-primary "  data-toggle="tooltip" data-placement="top" title="Reporte de Comprobante" href="http://192.168.100.8/Report/report/Report%20Account/ReportCompany"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
-               <button class="btn btn-primary" onclick="sendAll()"><span class="fas fa-save" aria-hidden="true"></span></button>
+               <button class="btn btn-danger" onClick="nullVoucher()" id="btnNullVoucher" style="display:none;" data-toggle="tooltip" data-placement="top" title="Anular Comprobante "><span class="fas fa-trash" aria-hidden="true"></span></button>
+               <a class="btn  btn-primary " id="btnPrintReport" style="display:none;"  data-toggle="tooltip" data-placement="top" title="Reporte de Comprobante" href="http://192.168.100.8/Report/report/Report%20Account/ReportVoucher"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
+               <button class="btn btn-primary" onclick="sendAll()" id="btnSave"><span class="fas fa-save" aria-hidden="true"></span></button>
                </div>
 
             <div class="row">
@@ -24,7 +32,7 @@
                             Serie
                         </label>
                         <input type="text" class="form-control" id="txtNextId" value="1" readonly />
-                    </div>
+                         </div>
                     <div class="form-group">
                         <label>Tipo de compra</label>
                         <select class="form-control" id="dropdownTypeVoucher">
@@ -48,7 +56,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label>Estado </label>
-                        <input type="text" value="Abierto" class="form-control" readonly />
+                        <input type="text" value="Abierto" class="form-control" readonly  id="txtStatusVoucher"/>
                     </div>
                     <div class="form-group">
                         <label>Moneda</label>
@@ -62,9 +70,10 @@
                 <textarea class="form-control" id="txtgloss">
                 </textarea>
             </div>
-            <button class="btn btn-primary" onclick="openModal()">
+            <button class="btn btn-primary mb-2" onclick="openModal()" id="bntAddDetailVoucher">
                 +
             </button>
+            <div class="table-scroll">
 
             <table id="tblDetailVoucher" class="table table-hover" style="cursor:pointer;">
                 <thead>
@@ -81,13 +90,14 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="2" style="text-align:right">Total:</th>
+                        <th colspan="2" style="text-align:right">TOTAL : </th>
                         <th id="txtDebeTotal" class="text-right">0</th>
                         <th id="txtHaberTotal" class="text-right">0</th>
                         <th></th>
                     </tr>
                 </tfoot>
             </table>
+            </div>
 
                </div>
 

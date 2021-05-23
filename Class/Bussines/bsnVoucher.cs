@@ -15,6 +15,10 @@ namespace AccountingSystem.Class.Bussines
         {
             return clsVoucher.getVoucher(idCompany);
         }
+        public Response deleteVoucher(int idVoucher)
+        {
+            return clsVoucher.deleteVoucher(idVoucher);
+        }
         public int getIdNext(int idCompany)
         {
             return clsVoucher.getIdNext(idCompany);
@@ -32,9 +36,14 @@ namespace AccountingSystem.Class.Bussines
             return clsVoucher.getAccountList(idCompany,idUser);
         }
 
-        public Response sendAll(Voucher voucher,List<VoucherDetail> voucherDetails)
+        public VoucherDTO sendAll(Voucher voucher,List<VoucherDetail> voucherDetails)
         {
             return clsVoucher.sendAll(voucher,voucherDetails);
+        }
+
+        public VoucherDTO getEditDataVoucher(int idVoucher)
+        {
+            return clsVoucher.getEditDataVoucher(idVoucher);
         }
 
 

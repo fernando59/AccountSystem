@@ -44,8 +44,6 @@ namespace AccountingSystem.Controllers
         }
          public JsonResult SendAll(Voucher voucher,List<VoucherDetail> listVoucherDetail)
         {
-            VoucherDTO voucherDTO = new VoucherDTO();
-
             var company = (Company)Session["company"];
             voucher.idCompany = company.idCompany;
             voucher.idUser = 1;
@@ -53,7 +51,16 @@ namespace AccountingSystem.Controllers
             return Json(new { data = res}, JsonRequestBehavior.AllowGet);
         }
 
-
+        public JsonResult getEditDataVoucher(int idVoucher)
+        {
+            var res = bsnVoucher.getEditDataVoucher(idVoucher);
+            return Json(new { data = res}, JsonRequestBehavior.AllowGet);
+        }
+         public JsonResult deleteVoucher(int idVoucher)
+        {
+            var res = bsnVoucher.deleteVoucher(idVoucher);
+            return Json(new { data = res}, JsonRequestBehavior.AllowGet);
+        }
 
 
     }
