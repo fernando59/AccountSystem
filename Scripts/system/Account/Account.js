@@ -498,6 +498,7 @@ function getAccountResponse(response) {
             arrLevel1[is].children.push(e)
         }
     })
+    console.log(arrLevel1)
     createTree()
 }
 

@@ -21,7 +21,7 @@ namespace AccountingSystem.Class.Models
         {
             using (var sqlConnection = new SqlConnection(conexion))
             {
-                var query = "select serieVoucher,dateVoucher,tc.abbreviationCurrency,tv.typeVoucher,gloss,idVoucher,tv.statusVoucher,tv.idCompany "
+                var query = "select serieVoucher,dateVoucher,tc.abbreviationCurrency,tv.typeVoucher,gloss,idVoucher,tv.statusVoucher,tv.idCompany,tc.nameCurrency "
                             + " from tblVoucher tv,tblCurrency tc" +
                             " where tv.idCurrency = tc.idCurrency and tv.idCompany =" + idCompany+
                             " order by serieVoucher desc,dateVoucher desc";
@@ -105,7 +105,8 @@ namespace AccountingSystem.Class.Models
                         {
                             //Create
                            //getVoucherManagement Apertura
-                        string getVoucherManagement = "select tv.idVoucher,tv.gloss,tv.dateVoucher,tv.typeVoucher from tblVoucher tv,tblCompanies tc,tblManagements tm where tv.idCompany = tc.idCompany and tc.idCompany = tm.idCompany and tc.idCompany ="+voucher.idCompany+" and tv.dateVoucher >= tm.startDate and tv.dateVoucher <= tm.endDate and tm.state = 1 and tv.typeVoucher=4 and tv.statusVoucher =1";
+                        string getVoucherManagement = "select tv.idVoucher,tv.gloss,tv.dateVoucher,tv.typeVoucher from tblVoucher tv,tblCompanies tc,tblManagements tm where tv.idCompany = tc.idCompany and tc.idCompany = tm.idCompany" +
+                                " and tc.idCompany ="+voucher.idCompany+" and '"+dateStart+"'>=tm.startDate and '"+dateStart+"'<=tm.endDate  and tv.dateVoucher >= tm.startDate and tv.dateVoucher <= tm.endDate and tm.state = 1 and tv.typeVoucher=4 and tv.statusVoucher =1";
                         var voucherList = sqlConnection.Query<Voucher>(getVoucherManagement, commandType: System.Data.CommandType.Text,transaction: transaction).ToList();
                         if (voucherList.Count > 0 && voucher.typeVoucher ==4)
                         {
@@ -122,14 +123,14 @@ namespace AccountingSystem.Class.Models
                         int idVoucher = Convert.ToInt32(idRes);
                         voucher.idVoucher = idVoucher;
                         voucherDTO.voucher = voucher;
-                        string sqlInsertVoucherDetail = "insert into tblVoucherDetail (numberVoucher,gloss,amountOwed,amountAssets,amountOwedAlt,amountAssetsAlt,idUser,idVoucher,idAccount) values " +
+                         string sqlInsertVoucherDetail = "insert into tblVoucherDetail (numberVoucher,gloss,amountOwed,amountAssets,amountOwedAlt,amountAssetsAlt,idUser,idVoucher,idAccount) values " +
                             "(@numberVoucher,@gloss,@amountOwed,@amountAssets,@amountOwedAlt,@amountAssetsAlt,@idUser,"+idVoucher+",@idAccount)";
-                        foreach(VoucherDetail voucherDetail in listVoucher)
-                        {
-                            voucherDetail.idUser = 1;
-                            voucherDTO.voucherDetail.Add(voucherDetail);
-                            sqlConnection.Execute(sqlInsertVoucherDetail,voucherDetail, transaction: transaction);
-                        }
+                                 foreach(VoucherDetail voucherDetail in listVoucher)
+                                 {
+                                 voucherDetail.idUser = 1;
+                                 voucherDTO.voucherDetail.Add(voucherDetail);
+                                 sqlConnection.Execute(sqlInsertVoucherDetail,voucherDetail, transaction: transaction);
+                             }
                         transaction.Commit();
                            voucherDTO.response = new Response { Done =true,Message="Creado exitosamente",Value=0};
                            return voucherDTO;
@@ -142,57 +143,26 @@ namespace AccountingSystem.Class.Models
                             string sqlEditVoucher = "update tblVoucher set gloss=@gloss,dateVoucher=@dateVoucher,tc=@tc,statusVoucher=@statusVoucher,typeVoucher=@typeVoucher,idCurrency=@idCurrency where idVoucher=@idVoucher";
                             var respuesta = sqlConnection.Execute(sqlEditVoucher, voucher,transaction:transaction);
                             voucherDTO.voucher = voucher;
-
-                            //Get VoucherDetail 
+                            //Get List VoucherDetail 
                             string getVoucherDetail = "select * from tblVoucherDetail where idVoucher= " + voucher.idVoucher;
                             List<VoucherDetail> voucherList = sqlConnection.Query<VoucherDetail>(getVoucherDetail, commandType: System.Data.CommandType.Text,transaction: transaction).ToList();
-                            List<VoucherDetail> deleteList = voucherList;
                             //Array para eliminar
-                            var arrDelete = new List<VoucherDetail>();
-                            foreach(VoucherDetail voucherDetail in listVoucher)
-                            {
-                                if (voucherList.Any(comp => comp.idVoucherDetail == voucherDetail.idVoucherDetail))
-                                {
-                                    int index = voucherList.FindIndex(c => c.idVoucherDetail == voucherDetail.idVoucherDetail);
-                                     voucherList.RemoveAt(index);
-                                    string updateVoucherDetail = "update tblVoucherDetail set gloss=@gloss,amountOwed =@amountOwed,amountAssets =@amountAssets,amountOwedAlt = @amountOwedAlt,amountAssetsAlt = @amountAssetsAlt where idVoucherDetail =@idVoucherDetail";
-                                    var res= sqlConnection.Execute(updateVoucherDetail, voucherDetail,transaction:transaction);
-                                }
-                                //else if (voucherDetail.stateAddorUpdate ==1)
-                                //{
-                                        
-                                //    string sqlInsertVoucherDetail = "insert into tblVoucherDetail (numberVoucher,gloss,amountOwed,amountAssets,amountOwedAlt,amountAssetsAlt,idUser,idVoucher,idAccount) values " +
-                                //    "(@numberVoucher,@gloss,@amountOwed,@amountAssets,@amountOwedAlt,@amountAssetsAlt,@idUser,"+voucher.idVoucher+",@idAccount)";
-                                //    sqlConnection.Execute(sqlInsertVoucherDetail,voucherDetail, transaction: transaction);
-
-                                //}
-                                else
-                                {
-
-                                    string sqlInsertVoucherDetail = "insert into tblVoucherDetail (numberVoucher,gloss,amountOwed,amountAssets,amountOwedAlt,amountAssetsAlt,idUser,idVoucher,idAccount) values " +
-                                    "(@numberVoucher,@gloss,@amountOwed,@amountAssets,@amountOwedAlt,@amountAssetsAlt,@idUser,"+voucher.idVoucher+",@idAccount)";
-
-                                    sqlConnection.Execute(sqlInsertVoucherDetail,voucherDetail, transaction: transaction);
-
-                                     //string deleteVoucherDetail = "delete tblVoucherDetail where idVoucherDetail ="+voucherDetail.idVoucherDetail;
-                                    //var resDelete= sqlConnection.Execute(deleteVoucherDetail,transaction:transaction);
-                                  
-                                }
-
-                            }
                             if(voucherList.Count > 0)
                             {
-
-                            foreach (VoucherDetail voucherDetail1 in voucherList)
-                            {
+                              foreach (VoucherDetail voucherDetail1 in voucherList)
+                              {
                                 string deleteVoucherDetail = "delete tblVoucherDetail where idVoucherDetail ="+voucherDetail1.idVoucherDetail;
                                 var resDelete= sqlConnection.Execute(deleteVoucherDetail,transaction:transaction);
-                            }
+                              }
 
                             }
+                             string sqlInsertVoucherDetail = "insert into tblVoucherDetail (numberVoucher,gloss,amountOwed,amountAssets,amountOwedAlt,amountAssetsAlt,idUser,idVoucher,idAccount) values " +
+                                    "(@numberVoucher,@gloss,@amountOwed,@amountAssets,@amountOwedAlt,@amountAssetsAlt,"+voucher.idUser+","+voucher.idVoucher+",@idAccount)";
+                              sqlConnection.Execute(sqlInsertVoucherDetail,listVoucher, transaction: transaction);
+
                             voucherDTO.voucherDetail = voucherList;
                             voucherDTO.response = new Response { Done =true,Message="Editado exitosamente",Value=0};
-                             transaction.Commit();
+                            transaction.Commit();
                             return voucherDTO;
 
                         }
@@ -214,7 +184,9 @@ namespace AccountingSystem.Class.Models
             {
 
               VoucherDTO voucherDTO = new VoucherDTO();
-             string sqlGetVoucher = "select * from tblVoucher where idVoucher = "+idVoucher;
+             string sqlGetVoucher = " select tv.idVoucher,tv.serieVoucher,tv.gloss,tv.dateVoucher,tv.tc,tv.statusVoucher,tv.typeVoucher,tv.idUser,tv.idCurrency,tv.idCompany,tc.nameCurrency " +
+                    " from tblVoucher  tv,tblCurrency tc " +
+                    " where tv.idCurrency =tc.idCurrency and  idVoucher =  " + idVoucher;
               voucherDTO.voucher= sqlConnection.Query<Voucher>(sqlGetVoucher, commandType: System.Data.CommandType.Text).FirstOrDefault();
 
              string sqlGetVoucherDetail = "select tv.idVoucherDetail,concat(ta.codeAccount,'-',ta.nameAccount) as account,tv.gloss,tv.amountOwed,tv.amountAssets,tv.amountOwedAlt,tv.amountAssetsAlt,ta.idAccount,tv.idVoucher " +

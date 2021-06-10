@@ -1,0 +1,42 @@
+﻿    @{
+        ViewBag.Title = "Index";
+    }
+
+
+<style>
+    .tree{
+        height:640px;
+        width:80%;
+        margin:auto;
+        overflow-y:auto;
+        background:#fff;
+    }
+    .container-button{
+        margin:auto;
+        width:80%;
+        display:flex;
+        justify-content:space-between;
+    }
+</style>
+<h2 class="text-center p-5">Categorias</h2>
+<div class="container">
+    <div class="container-button mb-3">
+        <div>
+        <button class="btn btn-success" onclick="openModal()"><i class="fas fa-plus"></i></button>
+        <button class="btn btn-info" onclick="openModal(true)"><i class="fas fa-pencil-alt"></i></button>
+        <button class="btn btn-danger" onclick="remove()"><i class="fas fa-trash"></i></button>
+        </div>
+        <div>
+        @*<a class="btn  btn-primary"  data-toggle="tooltip" data-placement="top" 
+        title="Reporte de Cuenta" href="http://192.168.100.8/Report/report/Report%20Account/ReportAccount?idCompany=@ViewBag.idCompany"  
+        target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-print"></i></span></a>*@
+
+        <button class="btn btn-primary" onclick="colapsar()"><i class="fas fa-minus"></i></button>
+        <button class="btn btn-primary" onclick="expandir()"><i class="fas fa-expand-alt"></i></button>
+        </div>
+    </div>
+<div id="tree" class="tree"></div>
+</div>
+
+@Html.Partial("_ModalCategory")
+<script src="~/Scripts/system/Category/Category.js"></script>

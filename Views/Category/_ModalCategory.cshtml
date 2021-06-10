@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "_ModalCategory";
+}
+
+<div class="modal fade" id="modalCategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lblTitle">Nuevo Categoria</h5>
+                <strong onclick="closeModal()" style="cursor:pointer;">X</strong>
+            </div>
+            <div class="modal-body" style="width:100%">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control" value="" placeholder="Nombre" id="txtName" autocomplete="off"/>
+                </div>
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <textarea placeholder="Descripcion" class="form-control" id="txtDescription"></textarea>
+                </div>
+            </div>
+            <hr />
+            <div class="text-center pb-4">
+                <button type="button" class="btn btn-danger" onclick="closeModal()">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="saveCategory()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

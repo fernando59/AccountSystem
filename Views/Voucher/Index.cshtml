@@ -14,7 +14,7 @@
     <div class="row h-100 justify-content-center align-items-center flex-column">
         <div class="card w-100 p-5">
                <div class="card-header">
-    <h1 class="text-center p-1">Nuevo Comprobante</h1>
+    <h1 class="text-center p-1">Comprobante Contable</h1>
                </div>
               <div class="card-body">
             <div class="form-group text-right">
@@ -73,7 +73,7 @@
             <button class="btn btn-primary mb-2" onclick="openModal()" id="bntAddDetailVoucher">
                 +
             </button>
-            <div class="table-scroll">
+            <div  class="table-scroll">
 
             <table id="tblDetailVoucher" class="table table-hover" style="cursor:pointer;">
                 <thead>
@@ -88,16 +88,22 @@
                 </thead>
                 <tbody>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="2" style="text-align:right">TOTAL : </th>
-                        <th id="txtDebeTotal" class="text-right">0</th>
-                        <th id="txtHaberTotal" class="text-right">0</th>
-                        <th></th>
+                <!--<tfoot>
+                    <tr>-->
+                        @*<th colspan="2" style="text-align:right">TOTAL : </th>*@
+                        @*<th id="txtDebeTotal" class="text-right">0</th>*@
+                        @*<th id="txtHaberTotal" class="text-right">0</th>*@
+                        <!--<th></th>
                     </tr>
-                </tfoot>
+                </tfoot>-->
             </table>
+              </div>
+               <div style="" class="text-center pt-3">
+                <label style="margin-left:155px;"><strong>TOTAL : </strong></label>
+                <strong> <spam id="txtDebeTotal"  style="margin-left:230px;"> 0</spam></strong>
+                <strong><spam id="txtHaberTotal" class="ml-20" style="margin-left:220px">0</spam></strong>
             </div>
+
 
                </div>
 

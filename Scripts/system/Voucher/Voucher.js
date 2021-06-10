@@ -10,8 +10,10 @@ let idDetailVoucher = 0
 let idVoucher = 0
 let statusVoucher = 0
 let currencyMain ="Bolivianos"
+let currencyAltern ="Dolares"
 $(document).ready(function () {
 
+    getMainCurrency()
     $("[name='bt']").prop('disabled',true)
     let id = localStorage.getItem("idVoucher")
     if (parseInt(id) !== 0) {
@@ -23,7 +25,6 @@ $(document).ready(function () {
     } else {
     $("#txtdateVoucher").val(getCurrentDate())
     }
-    getMainCurrency()
 });
 
 function getDataVoucherEdit(idVoucher) {
@@ -45,8 +46,14 @@ function responseGetDataVoucher(responses) {
             disableAll()
         }
         voucherDetail.map(item => {
-            sumTotalDebe += item.amountOwed
-            sumTotalHaber += item.amountAssets
+            if (currencyMain === voucher.nameCurrency) {
+
+             sumTotalDebe += item.amountOwed
+             sumTotalHaber += item.amountAssets
+            } else {
+            sumTotalDebe += item.amountOwedAlt
+            sumTotalHaber += item.amountAssetsAlt
+           }
         })
         $("#txtDebeTotal").text(sumTotalDebe)
         $("#txtHaberTotal").text(sumTotalHaber)
@@ -55,11 +62,13 @@ function responseGetDataVoucher(responses) {
         $('#txtNextId').val(voucher.serieVoucher)
         $("#txtExchange").val(voucher.tc)
         $("#dropdownTypeVoucher").val(voucher.typeVoucher)
+        $("#dropdownCurrency").val(voucher.idCurrency)
         $("#txtdateVoucher").val(ConvertirFecha2(voucher.dateVoucher))
 
         //Loading status
         let status = JSON.parse(localStorage.getItem("voucher")).statusVoucher
         statusVoucher = status
+        currencyAltern = voucher.nameCurrency
 
         if (voucher.statusVoucher == 1) {
             $("#txtStatusVoucher").val('Abierto')
@@ -225,33 +234,20 @@ function getDataVoucherDetail() {
     let tc = $("#txtExchange").val()
     let account = $('#dropdownAccount option:selected').text().trim()
     let gloss = $("#txtgloss2").val().trim()
-    let amountOwed = $("#txtDebe").val()
-    let amountAssets = $('#txtHaber').val()
+    let amountOwed = BigInt($("#txtDebe").val()).toString()
+    console.log(amountOwed)
+    let amountAssets = parseFloat($('#txtHaber').val())
+    console.log(amountAssets)
     let amountOwedAlt =0
     let idUser = 1
     let amountAssetsAlt = 0
-    //currencyMain = $("#dropdownCurrency option:selected").text()
     amountOwedAlt = amountOwed
     amountAssetsAlt = amountAssets
-    //if (amountOwed != 0) {
-    //    if (currencyMain == "Bolivianos") {
-    //        amountOwedAlt = amountOwed / tc
-    //    } else {
-    //        amountOwedAlt = amountOwed*tc
-    //    }
-    //}
-    //if (amountAssets != 0) {
-    //    if (currencyMain == "Bolivianos") {
-    //        amountAssetsAlt = amountAssets/tc
-    //    } else {
-    //        amountAssetsAlt = amountAssets * tc
-    //    }
-    //}
-    if (amountOwed === "") {
-        amountOwed ="0"
+       if (amountOwed === "") {
+        amountOwed =0
     }
     if (amountAssets === "") {
-        amountAssets ='0'
+        amountAssets =0
     }
     return {
         idVoucherDetail,
@@ -289,7 +285,7 @@ $("#txtHaber").on("keyup", function (e) {
 
 function saveVoucherDetail() {
     let data = getDataVoucherDetail()
-    let filterAccount = listDetailVoucher.filter(item => item.idAccount == data.idAccount)
+    let filterAccount = listDetailVoucher.filter(item => item.account == data.account)
     if (data.gloss === "") {
         generadorAlertas('error', 'Error', 'La glosa es un campo requerido')
     } else if (data.amountOwed === "0" && data.amountAssets ==="0") {
@@ -321,11 +317,12 @@ function saveVoucherDetail() {
                   }
         } else {
             //Editar
-                  console.log(listDetailVoucher)
+                console.log(listDetailVoucher)
                   console.log(data.account)
-                  let without = listDetailVoucher.filter(item => item.account.toString().trim() === data.account.toString().trim())
+                  listDetailVoucher.map(item => console.log(item.account))
+                  let without = listDetailVoucher.filter(item => item.account.toString() === data.account)
             console.log(without.length)
-            if (without.length > 1) {
+            if (without.length >= 1) {
                 generadorAlertas('error', 'Error', 'Ya existe una cuenta registrada')
                 return
             } else {
@@ -372,8 +369,27 @@ function tableDetailVoucher() {
         "columns": [
             { "data": "account", "autoWidth": true },
             { "data": "gloss", "autoWidth": true },
-            { "data": "amountOwed", "autoWidth": true },
-            { "data": "amountAssets", "autoWidth": true },
+            {
+                "render": function (row, type, set) {
+                    if (currencyMain === currencyAltern) {
+                        return set.amountOwed
+                    } else {
+                        return set.amountOwedAlt
+                    }
+                }
+            },
+              {
+                "render": function (row, type, set) {
+                      if (currencyMain === currencyAltern) {
+                          return set.amountAssets
+                      } else {
+                          return set.amountAssetsAlt
+                    }
+                }
+            },
+
+            //{ "data": "amountOwed", "autoWidth": true },
+            //{ "data": "amountAssets", "autoWidth": true },
             {
                 "render": function (row, type, set) {
                     let ids = set.idVoucherDetail
@@ -526,18 +542,17 @@ function disableAll() {
 
 function convertAmountOwedCurrencySave(amountOwed, tc, account) {
     console.log(amountOwed, account, currencyMain)
-    let currencyAlt = listCurrencies.filter(item => item.nameCurrency.toString().trim() !== currencyMain.toString().trim())
     if (currencyMain.toString().trim() == "Bolivianos" && account.toString().trim() == "Dolares") {
         console.log('entro aca')
-        return amountOwed / tc
+        return parseFloat( amountOwed / tc)
     } else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Euros") {
         console.log('entro aca 2')
-        return amountOwed / tc
+        return parseFloat( amountOwed / tc)
     } else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Bolivianos") {
         console.log('entro aca 3')
-        return amountOwed
+        return parseFloat( amountOwed)
     } else {
-        return amountOwed
+        return parseFloat(amountOwed)
     }
 }
 function convertAmountOwedAltCurrencySave(amountOwedAlt, tc, account) {
@@ -575,10 +590,10 @@ function convertAmountAssetsAltCurrencySave(amountAssetsAlt, tc, account) {
     if (currencyMain.toString().trim() == "Bolivianos" && account.toString().trim() == "Dolares") {
         return amountAssetsAlt
     } else if (currencyMain == "Bolivianos" && account == "Euros") {
-        return amountAssetsAlt * tc
+        return parseFloat( amountAssetsAlt * tc)
     }
     else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Bolivianos") {
-        return amountAssetsAlt *tc
+        return parseFloat( amountAssetsAlt * tc)
     }
     if (currencyMain == "Dolares" && account == "Bolivianos") {
         return amountAssetsAlt / tc

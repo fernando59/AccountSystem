@@ -203,4 +203,4 @@ C:\Users\Fernando\source\repos\AccountingSystem\AccountingSystem\obj\Debug\Accou
 C:\Users\Fernando\source\repos\AccountingSystem\AccountingSystem\obj\Debug\AccountingSystem.csproj.CopyComplete
 C:\Users\Fernando\source\repos\AccountingSystem\AccountingSystem\obj\Debug\AccountingSystem.dll
 C:\Users\Fernando\source\repos\AccountingSystem\AccountingSystem\obj\Debug\AccountingSystem.pdb
-C:\Users\Fernando\source\repos\AccountingSystem\AccountingSystem\obj\Debug\AccountingSystem.csprojAssemblyReference.cache
+C:\Users\Fernando\source\repos\AccountingSystem\AccountingSystem\obj\Debug\AccountingSystem.csproj.AssemblyReference.cache

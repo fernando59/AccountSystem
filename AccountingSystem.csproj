@@ -150,10 +150,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Class\Bussines\bsnAccount.cs" />
+    <Compile Include="Class\Bussines\bsnArticle.cs" />
+    <Compile Include="Class\Bussines\bsnCategory.cs" />
     <Compile Include="Class\Bussines\bsnCompany.cs" />
     <Compile Include="Class\Bussines\bsnCompanyCurrency.cs" />
     <Compile Include="Class\Bussines\bsnCurrency.cs" />
+    <Compile Include="Class\Bussines\bsnLote.cs" />
     <Compile Include="Class\Bussines\bsnManagement.cs" />
+    <Compile Include="Class\Bussines\bsnNote.cs" />
     <Compile Include="Class\Bussines\bsnPeriod.cs" />
     <Compile Include="Class\Bussines\bsnUser.cs" />
     <Compile Include="Class\Bussines\bsnVoucher.cs" />
@@ -161,21 +165,29 @@
     <Compile Include="Class\Global\PassEncript.cs" />
     <Compile Include="Class\Global\Response.cs" />
     <Compile Include="Class\Models\clsAccount.cs" />
+    <Compile Include="Class\Models\clsArticle.cs" />
+    <Compile Include="Class\Models\clsCategory.cs" />
     <Compile Include="Class\Models\clsCompany.cs" />
     <Compile Include="Class\Models\clsCompanyCurrency.cs" />
     <Compile Include="Class\Models\clsCurrency.cs" />
+    <Compile Include="Class\Models\clsLote.cs" />
     <Compile Include="Class\Models\clsManagement.cs" />
+    <Compile Include="Class\Models\clsNote.cs" />
     <Compile Include="Class\Models\clsPeriod.cs" />
     <Compile Include="Class\Models\clsUsers.cs" />
     <Compile Include="Class\Models\clsVoucher.cs" />
     <Compile Include="Class\Models\clsVoucherDetail.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanyCurrencyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LoteController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />
+    <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\PeriodController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
@@ -186,10 +198,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\ArticleCategory.cs" />
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyCurrency.cs" />
     <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\Lote.cs" />
     <Compile Include="Models\Management.cs" />
+    <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\NoteDTO.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Voucher.cs" />
@@ -2460,12 +2478,17 @@
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
     <Content Include="Scripts\system\Account\Account.js" />
+    <Content Include="Scripts\system\Article\Article.js" />
+    <Content Include="Scripts\system\Category\Category.js" />
     <Content Include="Scripts\system\Company.js" />
     <Content Include="Scripts\system\Currency\Currency.js" />
     <Content Include="Scripts\system\Global.js" />
     <Content Include="Scripts\system\Login.js" />
+    <Content Include="Scripts\system\Lote\Lote.js" />
     <Content Include="Scripts\system\Management\Management.js" />
     <Content Include="Scripts\system\Management\Validations.js" />
+    <Content Include="Scripts\system\Note\Note.js" />
+    <Content Include="Scripts\system\Note\NoteList.js" />
     <Content Include="Scripts\system\Periods\Periods.js" />
     <Content Include="Scripts\system\Periods\Validations.js" />
     <Content Include="Scripts\system\VoucherDetail\VoucherDetail.js" />
@@ -2531,6 +2554,15 @@
     <Content Include="Views\Voucher\_ModalAddVoucher.cshtml" />
     <Content Include="Views\VoucherDetail\Index.cshtml" />
     <Content Include="Views\Voucher\List.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Article\_ModalArticle.cshtml" />
+    <Content Include="Views\Category\_ModalCategory.cshtml" />
+    <Content Include="Views\Lote\Index.cshtml" />
+    <Content Include="Views\Note\Index.cshtml" />
+    <Content Include="Views\Note\_ModalNote.cshtml" />
+    <Content Include="Views\Note\List.cshtml" />
+    <Content Include="Views\Note\ListSale.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

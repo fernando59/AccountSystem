@@ -56,6 +56,9 @@
     <link href="~/Content/theme/plugins/TreeView/css/gijgo.css" rel="stylesheet" />
     @*<link href="~/Content/theme/plugins/TreeView/fonts/gijgo.material.svg" rel="stylesheet" />*@
     <script src="~/Content/theme/plugins/TreeView/js/gijgo.js"></script>
+    <!-- Tree checkbox-->
+    <link href="~/Content/theme/plugins/treeview-checkbox/css/jquery.treeview.css" rel="stylesheet" />
+    <script src="~/Content/theme/plugins/treeview-checkbox/js/jquery.treeview.js"></script>
 
     <script src="~/Scripts/system/Global.js"></script>
     <style>
@@ -257,6 +260,43 @@
 
 
                         </li>
+                          <li class="nav-item has-treeview menu-close">
+                            <a href="#" class="nav-link ">
+                                <i class="nav-icon fas fa-warehouse"></i>
+                                <p>
+                                    Inventario
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="~/Article/Index" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Articulos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="~/Category/Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Categorias</p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="~/Note/List" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Nota de Compra</p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="~/Note/ListSale" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Nota de Venta</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            </li>
+
                         @*<li class="nav-item">
                             <a href="@Url.Action("Index", "Management")" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>

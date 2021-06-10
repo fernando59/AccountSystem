@@ -18,5 +18,6 @@ namespace AccountingSystem.Models
         public int idCurrency { get; set; }
         public int idCompany{ get; set; }
         public string abbreviationCurrency{ get; set; }
+        public string nameCurrency{ get; set; }
     }
 }
