@@ -16,6 +16,11 @@ namespace AccountingSystem.Class.Bussines
     {
        return classAccount.getAccounts(idUser,idCompany);
     }
+
+    public List<Account> getLastAccounts(int idUser,int idCompany)
+    {
+       return classAccount.getLastAccounts(idUser,idCompany);
+    }
     public Account insertAccount(Account account)
     {
        return classAccount.inserAccount(account);

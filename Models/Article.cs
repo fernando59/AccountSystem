@@ -20,5 +20,8 @@ namespace AccountingSystem.Models
         public int pointNewOrder{ get; set; }
         public int idUser{ get; set; }
         public int idCompany{ get; set; }
+        public List<Category> categories { get; set; }
+        public List<ArticleCategory> articleCategories{ get; set; }
+        public List<int> listCategoriesNumber { get; set; }
     }
 }

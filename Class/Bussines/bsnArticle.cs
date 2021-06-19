@@ -18,15 +18,15 @@ namespace AccountingSystem.Class.Bussines
         }
 
 
-        public Response insertArticle(Article article,List<ArticleCategory> list)
+        public Response insertArticle(Article article,List<int> list)
         {
             return classArticle.insertArticle(article,list);
 
         } 
 
-        public Response updateArticle(Article article)
+        public Response updateArticle(Article article,List<int> list)
         {
-            return classArticle.updateArticle(article);
+            return classArticle.updateArticle(article,list);
 
         } 
 

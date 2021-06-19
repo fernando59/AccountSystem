@@ -3,31 +3,26 @@ let idArticle = 0
 let listArticleCategories =[]
 let listCategory =[1,2]
 let myTree
+let listLoteList =[]
 
 $(document).ready(function () {
     getArticles()
     getCategory()
 });
-let treeObject = [{
-    text: "Parent 1",// Required
-    checked: true,// Optional
-    id: 15,
-    otherDatas: "Other Datas",// Optional
-    children: [// Required
-      { text: "Child 1" /* Required */, checked: true },
-      { text: "Child 2" /* Required */ }
-    ]}, {
-    text: "Parent 2",
-    children: [
-      {
-        text: "Parent 3",
-        children: [
-          { text: "Child 3", checked: true },
-          { text: "Child 4" }
-        ]
+
+function getLotesList(id) {
+    let url = "/Note/getLoteList";
+    let type = "GET";
+    let data = {idArticle:id};
+    let typeData = "JSON";
+    solicitudAjax(url, responseLotesList, data, typeData, type);
+
 }
-    ]}
-]
+function responseLotesList(response) {
+    console.log(response)
+    listLoteList = response.data
+    tableLotes()
+}
 
 
 function getArticles() {
@@ -46,7 +41,7 @@ function getArticleResponse(response) {
     tableArticle()
 }
 function getCategory() {
-    let url = "/Category/getCategories";
+    let url = "/Category/getCategoriesNoTree";
     let type = "GET";
     let data = {};
     let typeData = "JSON";
@@ -55,18 +50,20 @@ function getCategory() {
 }
 function responseGetCategory(response) {
     listCategory = response.data
-    console.log(response)
-    listCategory.checked = false
-    myTree = new TreeView(listCategory, {
-    showAlwaysCheckBox: true,
-    fold: true,
-    openAllFold: false
-        });
-
-    $('#tree').append(myTree.root)
+    makeDropdownCategory()
 
 
 }
+function makeDropdownCategory() {
+    let list = ''
+    for (let i = 0; i < listCategory.length; i++) {
+        list += `<option value =${listCategory[i].idCategory}> ${listCategory[i].nameCategory}</option >`
+    }
+    $("#dropdownCategory").empty().append(list)
+    $("#dropdownCategory").select2({tags:true})
+
+}
+
 
 
 function tableArticle() {
@@ -92,7 +89,8 @@ function tableArticle() {
                     const id = set.idArticle
                     return `
                         <div class="text-center">
-                        <button class="btn btn-sm btn-info" onClick="editArticle(${id})" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span class="fas fa-pencil-alt" aria-hidden="true"></span></button>
+                        <button class="btn btn-sm btn-primary" onClick="showLotes(${id})" data-toggle="tooltip" data-placement="top" title="Listado de Lotes"><span class="fas fa-eye" aria-hidden="true"></span></button>
+                        <button class="btn btn-sm btn-info" onClick="editArticle(${id})" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span  class="fas fa-pencil-alt" aria-hidden="true"></span></button>
                         <button class="btn btn-sm btn-danger" onClick="deleteArticle(${id})" data-toggle="tooltip" data-placement="top" title="Eliminar Empresa"><span class="fas fa-trash" aria-hidden="true"></span></button>
                         </div>
                         `;
@@ -131,11 +129,13 @@ function getData() {
     let nameArticle = $("#txtName").val()
     let description= $("#txtDescription").val()
     let salePrice = $("#txtPrice").val()
+    let categories = $("#dropdownCategory").val()
     return {
         nameArticle,
         description,
         salePrice,
-        idArticle
+        idArticle,
+        categories
     }
 }
 function setData(data) {
@@ -143,6 +143,7 @@ function setData(data) {
     $("#txtName").val(data.nameArticle)
     $("#txtDescription").val(data.description)
     $("#txtPrice").val(data.salePrice)
+    $("#dropdownCategory").val(data.listCategoriesNumber).trigger('change');
 
 }
 
@@ -156,7 +157,8 @@ function saveArticle() {
         }
         let data = {
             article,
-            listArticleCategories:listArticleCategories
+            listArticleCategories: listArticleCategories,
+            categories:$("#dropdownCategory").val()
         }
         console.log(data)
         solicitudAjax(url, newArticleResponse, data, "JSON", "POST");
@@ -179,6 +181,7 @@ function editArticle(id) {
 
     let find = listArticles.find(element => element.idArticle === id)
     setData(find)
+    console.log(find)
     openModal(true)
 }
 function deleteArticle(id) {
@@ -216,4 +219,57 @@ function validate(data) {
         return false
     }
     return true
+}
+function tableLotes() {
+    $("#tblLote").DataTable({
+        "data": listLoteList,
+        "destroy": true,
+        "searching": true,
+        "ordering": false,
+        "bLengthChange": false,
+        "bInfo": false,
+        "pageLength": 5,
+        columnDefs: [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 1, targets: -1 }
+        ],
+        "columns": [
+            { "data": "nroLote", "autoWidth": true },
+            {
+                "render": function (row, type, set) {
+                    return ConvertirFecha(set.dateEntry)
+                }
+            }, 
+             {
+                 "render": function (row, type, set) {
+                     if (set.dueDate == "/Date(-62135582400000)/") {
+                         return '-'
+                     }
+                    return ConvertirFecha(set.dueDate)
+                }
+            }, 
+            { "data": "quantityLote", "autoWidth": true },
+            { "data": "stock", "autoWidth": true },
+            { "data": "statusLote", "autoWidth": true },
+        ],
+        "drawCallback": function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+ //"language": {
+ //           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+ //       }
+
+   });
+}
+
+
+
+
+function showLotes(id) {
+    getLotesList(id)
+    $("#modalLotes").modal({ show: true, keyboard: false, backdrop: 'static' })
+    console.log('show')
+}
+function closeModalListLotes() {
+    $('#modalLotes').modal('hide')
 }

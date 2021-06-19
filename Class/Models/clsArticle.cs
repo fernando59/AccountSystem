@@ -23,16 +23,27 @@ namespace AccountingSystem.Class.Models
             {
                 var query = "select * from tblArticles";
                 var articles = sqlConnection.Query<Article>(query, new { idCompany = idCompany }, commandType: System.Data.CommandType.Text).ToList();
+                foreach(var article in articles)
+                {
+                    string queryCategory = "select * from tblArticleCategory where idArticle ="+article.idArticle;
+                    List<ArticleCategory> listcategories = sqlConnection.Query<ArticleCategory>(queryCategory,commandType:System.Data.CommandType.Text).ToList();
+                    article.articleCategories = listcategories;
+
+                    string queryCategoryNumber = "select idCategory from tblArticleCategory where idArticle ="+article.idArticle;
+                    List<int> listcategoriesNumber = sqlConnection.Query<int>(queryCategoryNumber,commandType:System.Data.CommandType.Text).ToList();
+                    article.articleCategories = listcategories;
+                    article.listCategoriesNumber = listcategoriesNumber;
+                }
                 return articles ?? new List<Article>();
 
             }
         }
 
-        public Response insertArticle(Article article,List<ArticleCategory> articleCategories)
+        public Response insertArticle(Article article,List<int> articleCategories)
         {
             article.idUser = 1;
 
-            string sql = "insert into tblArticles (nameArticle,description,salePrice,idCompany,idUser) values (@nameArticle,@description,@salePrice,@idCompany,@idUser)";
+            string sql = "insert into tblArticles (nameArticle,description,salePrice,idCompany,idUser) values (@nameArticle,@description,@salePrice,@idCompany,@idUser)SELECT SCOPE_IDENTITY()";
             using (var sqlConnection = new SqlConnection(conexion))
             {
                 sqlConnection.Open();
@@ -42,6 +53,17 @@ namespace AccountingSystem.Class.Models
                 {
                     var respuesta = sqlConnection.ExecuteScalar(sql, article,transaction:transaction);
                     int id= Convert.ToInt32(respuesta);
+
+                        if (articleCategories.Count > 0)
+                        {
+
+                             for(var i=0; i<articleCategories.Count; i++)
+                             {
+                                string sqlInsertCategoryArticle ="insert into tblArticleCategory (idArticle,idCategory) values("+id+","+articleCategories[i]+")";
+                                sqlConnection.ExecuteScalar(sqlInsertCategoryArticle ,transaction:transaction);
+
+                             }
+                        }
 
                         //if(articleCategories.Count >0)
                         //{
@@ -78,7 +100,7 @@ namespace AccountingSystem.Class.Models
             }
 
         }
-         public Response updateArticle(Article article)
+         public Response updateArticle(Article article,List<int> articleCategories)
         {
             article.idUser = 1;
 
@@ -91,6 +113,19 @@ namespace AccountingSystem.Class.Models
                 try
                 {
                     var respuesta = sqlConnection.Execute(sql, article,transaction:transaction);
+
+                        //Elimino todas las categorias
+                    string sqlDelete = "delete tblArticleCategory where idArticle = "+article.idArticle;
+                    sqlConnection.Execute(sqlDelete, transaction:transaction);
+                        if (articleCategories.Count > 0)
+                        {
+                            for (var i = 0; i < articleCategories.Count; i++)
+                            {
+                                string sqlInsertCategoryArticle ="insert into tblArticleCategory (idArticle,idCategory) values("+article.idArticle+","+articleCategories[i]+")";
+                                sqlConnection.ExecuteScalar(sqlInsertCategoryArticle ,transaction:transaction);
+                            }
+                        }
+
                         transaction.Commit();
                     return new Response { Done = true, Message = "Articulo editado exitosamente", Value = -1 };
                 }

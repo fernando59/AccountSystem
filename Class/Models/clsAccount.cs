@@ -28,6 +28,17 @@ namespace AccountingSystem.Class.Models
 
             }
         }
+
+         public List<Account> getLastAccounts(int idUser,int idCompany)
+        {
+            using (var sqlConnection = new SqlConnection(conexion))
+            {
+                var query = "Select t.idAccount as id,t.codeAccount,concat(t.codeAccount,' - ',t.nameAccount) as text,t.nameAccount,t.levelAccount,t.typeAccount,t.idUser,t.idCompany,t.idAccountFather  from tblAccounts t  where idCompany =@idCompany order by levelAccount,codeAccount asc ";
+                var companies = sqlConnection.Query<Account>(query, new { idCompany=idCompany},commandType: System.Data.CommandType.Text).ToList();
+                return companies ?? new List<Account>();
+
+            }
+        }
        public Account inserAccount(Account account)
         {
             string sql = "";

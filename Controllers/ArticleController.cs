@@ -25,18 +25,18 @@ namespace AccountingSystem.Controllers
         }
 
 
-        public JsonResult insertArticle(Article article,List<ArticleCategory> listArticleCategories)
+        public JsonResult insertArticle(Article article,List<int> categories)
         {
 
             var company = (Company)Session["company"];
             article.idCompany = company.idCompany;
-            var articleResponse = bsnArticle.insertArticle(article,listArticleCategories);
+            var articleResponse = bsnArticle.insertArticle(article,categories);
             return Json(new { data = articleResponse}, JsonRequestBehavior.AllowGet);
         }
-         public JsonResult updateArticle(Article article)
+         public JsonResult updateArticle(Article article,List<int> categories)
         {
 
-            var articleResponse = bsnArticle.updateArticle(article);
+            var articleResponse = bsnArticle.updateArticle(article,categories);
             return Json(new { data = articleResponse}, JsonRequestBehavior.AllowGet);
         }
         public JsonResult deleteArticle(int id)

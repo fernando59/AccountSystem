@@ -3,22 +3,40 @@ let sendAllArticles =[]
 let idArticle = 0
 let idNote =0
 let totalNote = 0
+let listTableLotes = []
+let editor
+let table
 
 
 
 $(document).ready(function () {
     getNote()
     getArticles()
+     modificarTexto('txtTitleModal', 'Nota de Venta')
     $("#txtDate").val(getCurrentDate())
     let id = localStorage.getItem("idNote")
     if (parseInt(id) !== 0) {
         idNote =parseInt( id)
         $("#btnPrintNote").show()
         getDataNoteEdit(idNote)
-    } else {
+    }});
 
+function getLoteList(id) {
+    console.log(id)
+    console.log('change')
+   let url = "/Note/getLoteList"
+    let data = {
+        idArticle: id
     }
-});
+    solicitudAjax(url, responseGetLoteList, data, "JSON", "POST");
+
+}
+function responseGetLoteList(response) {
+    listTableLotes = response.data
+    tableLotes()
+    console.log(response)
+}
+
 function getDataNoteEdit(idNote) {
     let url = "/Note/getEditDataNote"
     let data = {
@@ -63,7 +81,7 @@ function getArticles() {
 function getNote() {
     let url = "/Note/getNote"
     let data = {
-        typeNote:1
+        typeNote:2
     }
     solicitudAjax(url, responseNoteId, data, "JSON", "POST");
 }
@@ -87,7 +105,7 @@ function makeDropdown() {
 
     $("#dropdownArticle").empty().append(list)
     $("#dropdownArticle").select2()
-
+    getLoteList(listArticle[0].idArticle)
 }
 
 /**-------------------------TABLE -*------------------------------------ */
@@ -156,7 +174,7 @@ function tableArticles() {
 
 /**-------------------------------MODAL ----------------------------------*/
 function getData() {
-    let dateNote = $("#txtDate").val()
+    let dateNote = getCurrentDate()
     let description = $("#txtDescriptionNote").val().trim()
     let nroNote = parseInt( $("#txtNroNote").val())
     let total = totalNote
@@ -343,7 +361,7 @@ function deleteArticle(id) {
 
 function sendAll() {
 
-    let url = "/Note/insertBuyNote"
+    let url = "/Note/insertSaleNote"
     if (sendAllArticles.length > 0) {
 
         if (idArticle !== 0) {
@@ -376,7 +394,7 @@ function responseSendAll(responses) {
         generadorAlertas('success', 'Exito', 'Agregado exitosamente')
     } else {
 
-        generadorAlertas('error', 'Error',response.Message )
+        generadorAlertas('error', 'Error', 'Ha ocurrido un error')
     }
 }
 
@@ -417,6 +435,10 @@ function responseNullNote(response) {
     }
 }
 
+$("#dropdownArticle").change(function (e) {
+    let id =e.target.value
+    getLoteList(id)
+});
 
 
 
@@ -462,5 +484,103 @@ function disableAll() {
         //$("#btnNullNote").prop('disabled',true)
 }
 
+/*-----------------------------------------------Second Table*/
+function tableLotes() {
+    table = $("#tblLotes").DataTable({
+        "data": listTableLotes,
+        "destroy": true,
+        "searching": false,
+        "ordering": false,
+        "bLengthChange": false,
+        "bInfo": false,
+        "paging": false,
+        "pageLength": 55,
+        "scrollY": 300,
+        "select": true,
+        //"scroller": true,
+        columnDefs: [
+            //{ responsivePriority: 1, targets: 0 },
+            //{ responsivePriority: 1, targets: -1 },
+            {targets:3, className: 'dt-body-right text-right'},
+            {targets:2, className: 'dt-body-right text-right'},
+            {targets:1, className: 'dt-body-right'},
+            { targets: 0, className: 'dt-body-right' },
+            { className: 'select-checkbox', targets:0,orderable:false }
+        ],
+        //select: {
+        //    style: 'os',
+        //    selector: 'td:first-child'
+        //},
+        "columns": [
+            //{
+            //    "render": function (row, type, set) {
+
+            //        return `<input type="checkbox" class="editor-active" />`
+            //    }
+            //},
+            { "data": "nroLote", "autoWidth": true },
+            { "data": "quantityLote", "autoWidth": true },
+            { "data": "stock", "autoWidth": true },
+            {
+                "render": function (row, type, set) {
+                    let idNote = set.idNote
+                    let nro = set.nroLote
+                    if (parseInt(idNote) !== 0 ) {
+                         $('button[name="bt"]').prop('disabled',true)
+                    }
+
+                        return `
+                        <div class="text-center">
+                            <input type="number" class="form-control" value="0" name="-send-${idNote}-${nro}-"/>
+                        </div>
+                        `;
+                }
+            }
+        ],
+        "drawCallback": function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+         rowCallback: function (row, data) {
+             // Set the checked state of the checkbox in the table
+            $('input.editor-active', row).prop('checked', data.active == 1);
+        }
+
+    });
+}
+$('#tblLotes').on('change', 'input.editor-active', function (e) {
+    console.log(e.target.value)
+        //e.edit($(this).closest('tr'), false)
+        //.set('active', $(this).prop('checked') ? 1 : 0)
+        //.submit();
+});
 
 
+function saveDetailNote() {
+    let data = table.$('input, select').serialize();
+    let arr = data.split('-')
+    let sendDetail = []
+    let idArticle = $("#dropdownArticle").val()
+    for (let i = 1; i < arr.length; i=i+4) {
+        let idNote = arr[i+1]
+        let nro = arr[i + 2]
+        let quantity = ""
+        if (i+4 === arr.length) {
+            quantity = arr[i + 3].substring(1, arr[i + 3].length)
+        } else {
+
+            quantity = arr[i + 3].substring(1, arr[i + 3].length - 1)
+        }
+        if (parseInt(quantity) !== 0) {
+            sendDetail.push({ idNote, nro, quantity, idArticle })
+        }
+    }
+
+    console.log(sendDetail)
+    if (sendDetail.length !== 0) {
+         let url = "/Article/getArticles"
+        solicitudAjax(url, responseArticle, {}, "JSON", "POST");
+
+    } else {
+        generadorAlertas('error', 'Error', 'Debe seleccionar un lote')
+    }
+}

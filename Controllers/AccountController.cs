@@ -27,6 +27,14 @@ namespace AccountingSystem.Controllers
             var listAccounts = bsnAccount.getAccounts(1, company.idCompany);
             return Json(new { data = listAccounts }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult getLastAccounts()
+        {
+            var user = (User)Session["user"];
+            var company = (Company)Session["company"];
+            var listAccounts = bsnAccount.getLastAccounts(1, company.idCompany);
+            return Json(new { data = listAccounts }, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult insertAccount(Account account)
         {

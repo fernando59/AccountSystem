@@ -11,16 +11,27 @@ namespace AccountingSystem.Class.Bussines
     public class bsnNote
     {
          private clsNote classNote = new clsNote();
-        public List<Note> getNotes(int idCompany)
+        public List<Note> getNotes(int idCompany,int typeNote)
         {
-            return classNote.getNotes(idCompany);
+            return classNote.getNotes(idCompany,typeNote);
+        }
+       public List<Lote> getLoteList(int idArticle)
+        {
+            return classNote.getLoteList(idArticle);
         }
 
-        public Response insertSaleNote(Note note, List<Lote> lotes)
+
+        public DetailDTO insertSaleNote(Note note, List<Detail> details)
         {
 
-            return classNote.insertSaleNote(note, lotes);
+            return classNote.insertSaleNote(note, details);
         }
+        public NoteDTO insertBuyNote(Note note, List<Lote> lotes)
+        {
+
+            return classNote.insertBuyNote(note, lotes);
+        }
+
         public int nroNote (int idCompany,int typeNote)
         {
             return classNote.getNroNext(idCompany,typeNote);

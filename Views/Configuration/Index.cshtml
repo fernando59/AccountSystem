@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .select2-choices {
+        min-height: 150px;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+    .select2-selection__rendered {
+        line-height: 31px !important;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 35px !important;
+    }
+
+    .select2-selection__arrow {
+        height: 34px !important;
+    }
+</style>
+
+
+<h2 class="text-center p-5">Configuración de Integración</h2>
+<div class="container">
+    @*<button class="btn btn-primary" onclick="report()">Report</button>*@
+            <div class="card">
+                <div class="card-header">
+                    <span>Integración :</span>
+                    <div class="form-check form-check-inline">
+
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="integration" id="flexRadioDefault1" value="true">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Si
+                            </label>
+
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="integration" id="flexRadioDefault2" checked value="false">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="form-group">
+                                    <label>Cuenta Caja</label>
+                                    <select id="dropdownAccountCaja" class="form-control" style="width:100%; height:40px;"> </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Credito Fiscal </label>
+                                    <select id="dropdownCreditoFiscal" class="form-control"> </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Debito Fiscal </label>
+                                    <select id="dropdownDebitoFiscal" class="form-control"> </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Compras </label>
+                                    <select id="dropdownCompras" class="form-control"> </select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label>Ventas</label>
+                                <div class="form-group">
+                                    <select id="dropdownVentas" class="form-control"> </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>It </label>
+                                    <select id="dropdownIt" class="form-control"> </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>It x Pagar </label>
+                                    <select id="dropdownItPagar" class="form-control"> </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--Footer-->
+                        <br />
+                        <hr />
+                        <div class="text-center">
+                            <button class="btn btn-danger">Cancelar</button>
+                            <button class="btn btn-success" onclick="saveIntegration()">Guardar</button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+    </div>
+
+
+
+
+<script src="~/Scripts/system/Configuration/ConfigurationIntegration.js"></script>

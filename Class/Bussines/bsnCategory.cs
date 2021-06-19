@@ -20,6 +20,10 @@ namespace AccountingSystem.Class.Bussines
         {
             return classCategory.getCategories(idCompany);
         }
+        public List<Category> getCategoriesNoTree(int idCompany)
+        {
+            return classCategory.getCategoriesNoTree(idCompany);
+        }
        public Response updateCategory(Category category)
         {
             return classCategory.updateCategory(category);

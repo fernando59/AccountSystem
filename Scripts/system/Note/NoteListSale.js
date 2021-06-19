@@ -1,9 +1,10 @@
-﻿let listNote =[]
+﻿
+let listNote =[]
 
 
 function goNote() {
    localStorage.setItem("idNote", 0)
-    window.location = "https://localhost:44348/AccountingSystem/Note/Index";
+    window.location = "https://localhost:44348/AccountingSystem/Note/IndexSale";
 
 }
 $(document).ready(function () {
@@ -16,8 +17,9 @@ $(document).ready(function () {
 
 function getNote() {
     let url = "/Note/getNotes"
-    let data={typeNote :1}
+    let data={typeNote :2}
     solicitudAjax(url, responseNote, data, "JSON", "POST");
+
 }
 
 function responseNote(response) {
@@ -96,7 +98,7 @@ function tableNote() {
 }
 function editNote(id) {
     localStorage.setItem("idNote",parseInt( id))
-    window.location = "https://localhost:44348/AccountingSystem/Note/Index";
+    window.location = "https://localhost:44348/AccountingSystem/Note/IndexSale";
 
 }
 $('#tblNote tbody').on('dblclick', 'tr', function () {
@@ -104,10 +106,9 @@ $('#tblNote tbody').on('dblclick', 'tr', function () {
     let id =data.idNote
     console.log(data)
     localStorage.setItem("idNote", id)
-    window.location = "https://localhost:44348/AccountingSystem/Note/Index";
+    window.location = "https://localhost:44348/AccountingSystem/Note/IndexSale";
 
 
 
 });
-
 

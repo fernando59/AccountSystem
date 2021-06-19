@@ -20,11 +20,18 @@ namespace AccountingSystem.Controllers
             return View();
         }
          public JsonResult getCategories()
-        {
+         {
             var company = (Company)Session["company"];
             var listCategories= bsnCategory.getCategories(company.idCompany);
             return Json(new { data = listCategories}, JsonRequestBehavior.AllowGet);
-        }
+         }
+         public JsonResult getCategoriesNoTree()
+         {
+            var company = (Company)Session["company"];
+            var listCategories= bsnCategory.getCategoriesNoTree(company.idCompany);
+            return Json(new { data = listCategories}, JsonRequestBehavior.AllowGet);
+         }
+
            public JsonResult insertCategory(Category category)
         {
             var company = (Company)Session["company"];

@@ -17,6 +17,11 @@ namespace AccountingSystem.Controllers
         {
             return View();
         }
+        public ActionResult IndexSale()
+        {
+            return View();
+        }
+
 
         public ActionResult List()
         {
@@ -29,24 +34,41 @@ namespace AccountingSystem.Controllers
             var nroNote= bsnNote.nroNote(company.idCompany,typeNote);
             return Json(new { data = nroNote}, JsonRequestBehavior.AllowGet);
         }
-         public JsonResult getNotes()
+         public JsonResult getLoteList(int idArticle)
         {
             var company = (Company)Session["company"];
-            var nroNote= bsnNote.getNotes(company.idCompany);
+            var nroNote= bsnNote.getLoteList(idArticle);
+            return Json(new { data = nroNote}, JsonRequestBehavior.AllowGet);
+        }
+
+         public JsonResult getNotes(int typeNote)
+        {
+            var company = (Company)Session["company"];
+            var nroNote= bsnNote.getNotes(company.idCompany,typeNote);
             return Json(new { data = nroNote}, JsonRequestBehavior.AllowGet);
         }
 
 
-        public JsonResult insertSaleNote(Note note,List<Lote> lotes)
+        public JsonResult insertBuyNote(Note note,List<Lote> lotes)
         {
             var company = (Company)Session["company"];
             note.idCompany = company.idCompany;
             note.idUser = 1;
-            var res = bsnNote.insertSaleNote(note,lotes);
+            var res = bsnNote.insertBuyNote(note,lotes);
             return Json(new { data = res}, JsonRequestBehavior.AllowGet);
-
-
         }
+
+         public JsonResult insertSaleNote(Note note,List<Detail> details)
+        {
+            var company = (Company)Session["company"];
+            note.idCompany = company.idCompany;
+            note.idUser = 1;
+            var res = bsnNote.insertSaleNote(note,details);
+            return Json(new { data = res}, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         public ActionResult ListSale()
         {
             return View();

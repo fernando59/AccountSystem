@@ -18,6 +18,16 @@ namespace AccountingSystem.Class.Models
             conexion = ConfigurationManager.ConnectionStrings["ConexionBD"].ConnectionString;
         }
 
+        public List<Category> getCategoriesNoTree(int idCompany)
+        {
+            using(var sqlConnection = new SqlConnection(conexion))
+            {
+                string sql = "SELECT * FROM tblCategories where idCompany =" + idCompany + " order by levelCategory asc";
+                List <Category>categories = sqlConnection.Query<Category>(sql, commandType: System.Data.CommandType.Text).ToList();
+                return categories ??new List<Category>();
+            }
+        }
+
         public List<Category> getCategories(int idCompany)
         {
             using(var sqlConnection = new SqlConnection(conexion))

@@ -154,6 +154,7 @@
     <Compile Include="Class\Bussines\bsnCategory.cs" />
     <Compile Include="Class\Bussines\bsnCompany.cs" />
     <Compile Include="Class\Bussines\bsnCompanyCurrency.cs" />
+    <Compile Include="Class\Bussines\bsnConfiguration.cs" />
     <Compile Include="Class\Bussines\bsnCurrency.cs" />
     <Compile Include="Class\Bussines\bsnLote.cs" />
     <Compile Include="Class\Bussines\bsnManagement.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Class\Models\clsCategory.cs" />
     <Compile Include="Class\Models\clsCompany.cs" />
     <Compile Include="Class\Models\clsCompanyCurrency.cs" />
+    <Compile Include="Class\Models\clsConfiguration.cs" />
     <Compile Include="Class\Models\clsCurrency.cs" />
     <Compile Include="Class\Models\clsLote.cs" />
     <Compile Include="Class\Models\clsManagement.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanyCurrencyController.cs" />
+    <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -203,7 +206,11 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyCurrency.cs" />
+    <Compile Include="Models\ConfigurationDTO.cs" />
+    <Compile Include="Models\ConfigurationIntegration.cs" />
     <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\Detail.cs" />
+    <Compile Include="Models\DetailDTO.cs" />
     <Compile Include="Models\Lote.cs" />
     <Compile Include="Models\Management.cs" />
     <Compile Include="Models\Note.cs" />
@@ -2481,6 +2488,7 @@
     <Content Include="Scripts\system\Article\Article.js" />
     <Content Include="Scripts\system\Category\Category.js" />
     <Content Include="Scripts\system\Company.js" />
+    <Content Include="Scripts\system\Configuration\ConfigurationIntegration.js" />
     <Content Include="Scripts\system\Currency\Currency.js" />
     <Content Include="Scripts\system\Global.js" />
     <Content Include="Scripts\system\Login.js" />
@@ -2489,6 +2497,8 @@
     <Content Include="Scripts\system\Management\Validations.js" />
     <Content Include="Scripts\system\Note\Note.js" />
     <Content Include="Scripts\system\Note\NoteList.js" />
+    <Content Include="Scripts\system\Note\NoteListSale.js" />
+    <Content Include="Scripts\system\Note\NoteSale.js" />
     <Content Include="Scripts\system\Periods\Periods.js" />
     <Content Include="Scripts\system\Periods\Validations.js" />
     <Content Include="Scripts\system\VoucherDetail\VoucherDetail.js" />
@@ -2563,6 +2573,10 @@
     <Content Include="Views\Note\_ModalNote.cshtml" />
     <Content Include="Views\Note\List.cshtml" />
     <Content Include="Views\Note\ListSale.cshtml" />
+    <Content Include="Views\Note\IndexSale.cshtml" />
+    <Content Include="Views\Article\_ModalListNote.cshtml" />
+    <Content Include="Views\Note\_ModalNoteSale.cshtml" />
+    <Content Include="Views\Configuration\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
