@@ -59,6 +59,17 @@ function tableNote() {
                     }
                 }
             },
+             {
+                "render": function (row, type, set) {
+
+                    if (set.statusNote=== 1) {
+                        return 'Abierto'
+                    } else {
+                        return 'Anulado'
+                    }
+                }
+            },
+
             {
                 "render": function (row, type, set) {
                     console.log(set)

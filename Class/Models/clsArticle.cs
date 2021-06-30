@@ -21,7 +21,7 @@ namespace AccountingSystem.Class.Models
         {
             using (var sqlConnection = new SqlConnection(conexion))
             {
-                var query = "select * from tblArticles";
+                var query = "select * from tblArticles where idCompany ="+idCompany;
                 var articles = sqlConnection.Query<Article>(query, new { idCompany = idCompany }, commandType: System.Data.CommandType.Text).ToList();
                 foreach(var article in articles)
                 {
@@ -54,6 +54,9 @@ namespace AccountingSystem.Class.Models
                     var respuesta = sqlConnection.ExecuteScalar(sql, article,transaction:transaction);
                     int id= Convert.ToInt32(respuesta);
 
+                    if(articleCategories != null)
+                        {
+
                         if (articleCategories.Count > 0)
                         {
 
@@ -63,6 +66,7 @@ namespace AccountingSystem.Class.Models
                                 sqlConnection.ExecuteScalar(sqlInsertCategoryArticle ,transaction:transaction);
 
                              }
+                        }
                         }
 
                         //if(articleCategories.Count >0)
@@ -117,12 +121,16 @@ namespace AccountingSystem.Class.Models
                         //Elimino todas las categorias
                     string sqlDelete = "delete tblArticleCategory where idArticle = "+article.idArticle;
                     sqlConnection.Execute(sqlDelete, transaction:transaction);
-                        if (articleCategories.Count > 0)
+                        if(articleCategories != null)
                         {
-                            for (var i = 0; i < articleCategories.Count; i++)
+
+                            if (articleCategories.Count > 0)
                             {
-                                string sqlInsertCategoryArticle ="insert into tblArticleCategory (idArticle,idCategory) values("+article.idArticle+","+articleCategories[i]+")";
-                                sqlConnection.ExecuteScalar(sqlInsertCategoryArticle ,transaction:transaction);
+                                for (var i = 0; i < articleCategories.Count; i++)
+                                {
+                                    string sqlInsertCategoryArticle ="insert into tblArticleCategory (idArticle,idCategory) values("+article.idArticle+","+articleCategories[i]+")";
+                                    sqlConnection.ExecuteScalar(sqlInsertCategoryArticle ,transaction:transaction);
+                                }
                             }
                         }
 

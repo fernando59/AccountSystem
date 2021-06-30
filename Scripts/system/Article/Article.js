@@ -11,7 +11,7 @@ $(document).ready(function () {
 });
 
 function getLotesList(id) {
-    let url = "/Note/getLoteList";
+    let url = "/Note/getLoteListTable";
     let type = "GET";
     let data = {idArticle:id};
     let typeData = "JSON";
@@ -75,23 +75,19 @@ function tableArticle() {
         "bLengthChange": false,
         "bInfo": false,
         "pageLength": 5,
-        columnDefs: [
-            { responsivePriority: 1, targets: 0 },
-            { responsivePriority: 1, targets: -1 }
-        ],
-        "columns": [
-            { "data": "nameArticle", "autoWidth": true },
-            { "data": "description", "autoWidth": true },
-            { "data": "salePrice", "autoWidth": true },
-            { "data": "salePrice", "autoWidth": true },
+            "columns": [
+            { "data": "nameArticle"},
+            { "data": "description" },
+            { "data": "quantity" },
+            { "data": "salePrice" },
             {
                 "render": function (row, type, set) {
                     const id = set.idArticle
                     return `
                         <div class="text-center">
-                        <button class="btn btn-sm btn-primary" onClick="showLotes(${id})" data-toggle="tooltip" data-placement="top" title="Listado de Lotes"><span class="fas fa-eye" aria-hidden="true"></span></button>
-                        <button class="btn btn-sm btn-info" onClick="editArticle(${id})" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span  class="fas fa-pencil-alt" aria-hidden="true"></span></button>
-                        <button class="btn btn-sm btn-danger" onClick="deleteArticle(${id})" data-toggle="tooltip" data-placement="top" title="Eliminar Empresa"><span class="fas fa-trash" aria-hidden="true"></span></button>
+                            <button class="btn btn-sm btn-primary" onClick="showLotes(${id})" data-toggle="tooltip" data-placement="top" title="Listado de Lotes"><span class="fas fa-eye" aria-hidden="true"></span></button>
+                            <button class="btn btn-sm btn-info" onClick="editArticle(${id})" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span  class="fas fa-pencil-alt" aria-hidden="true"></span></button>
+                            <button class="btn btn-sm btn-danger" onClick="deleteArticle(${id})" data-toggle="tooltip" data-placement="top" title="Eliminar Articulo"><span class="fas fa-trash" aria-hidden="true"></span></button>
                         </div>
                         `;
                 }
@@ -113,8 +109,10 @@ function tableArticle() {
 function openModal(isEdit =false) {
     console.log('open')
     $("#modalArticle").modal({ show: true, keyboard: false, backdrop: 'static' })
+    //getCategory()
 }
 function closeModal() {
+    console.log('close')
     $('#modalArticle').modal('hide')
     reset()
 }
@@ -124,6 +122,8 @@ function reset() {
     $("#txtName").val('')
     $("#txtDescription").val('')
     $("#txtPrice").val('')
+
+    $("#dropdownCategory").val('').trigger('change');
 }
 function getData() {
     let nameArticle = $("#txtName").val()
@@ -209,7 +209,7 @@ function responseDeleteArticle(response) {
         generadorAlertas('success', 'Exito', "Eliminado exitosamente")
         getArticles()
     } else {
-        generadorAlertas('error', 'Error', Message)
+        generadorAlertas('error', 'Error', 'No se puede el articulo')
     }
 }
 
@@ -250,7 +250,17 @@ function tableLotes() {
             }, 
             { "data": "quantityLote", "autoWidth": true },
             { "data": "stock", "autoWidth": true },
-            { "data": "statusLote", "autoWidth": true },
+            {
+                 "render": function (row, type, set) {
+                    if (set.statusLote == "1") {
+                        return 'Abierto'
+                    } else {
+
+                    return 'Anulado'
+                    }
+                }
+            }, 
+
         ],
         "drawCallback": function () {
             $('[data-toggle="tooltip"]').tooltip();

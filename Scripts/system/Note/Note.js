@@ -255,13 +255,15 @@ function saveArticle() {
                 return
             } else {
                 console.log('enter to edit')
-
                 let index = sendAllArticles.findIndex(item => parseInt(item.idArticle) === parseInt(idArticle))
+                totalNote -= parseFloat( sendAllArticles[index].price * sendAllArticles[index].quantityLote)
                 sendAllArticles[index].price = data.price
                 sendAllArticles[index].quantityLote = data.quantityLote
                 sendAllArticles[index].subTotal = data.subTotal
                 sendAllArticles[index].article = data.article
                 sendAllArticles[index].idArticle = data.idArticle
+                totalNote += parseFloat( data.subTotal)
+                $("#txtTotal").text(totalNote)
             }
         } else {
             //Create
@@ -346,8 +348,8 @@ function sendAll() {
     let url = "/Note/insertBuyNote"
     if (sendAllArticles.length > 0) {
 
-        if (idArticle !== 0) {
-        }
+        //if (idArticle !== 0) {
+        //}
         if ($("#txtDescriptionNote").val().trim() !== '') {
         let data = {
             note: getData(),
@@ -374,6 +376,9 @@ function responseSendAll(responses) {
         $("#btnPrintNote").show()
         $("#btnSave").prop('disabled',true)
         generadorAlertas('success', 'Exito', 'Agregado exitosamente')
+        let url = `http://192.168.100.8/Report/report/Report%20Account/ReportNote?idNote=${idNote}`
+        $("#btnPrintNote").attr("href",url)
+
     } else {
 
         generadorAlertas('error', 'Error',response.Message )
@@ -413,7 +418,7 @@ function responseNullNote(response) {
         $("#btnNullNote").prop('disabled',true)
     } else {
         
-        generadorAlertas('error', 'Error', 'Ha ocurrido un error')
+        generadorAlertas('error', 'Error', response.data.Message)
     }
 }
 

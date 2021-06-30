@@ -4,6 +4,7 @@ let level =0
 let parentData = {}
 let parent =''
 let tree
+let isEdit = false
 
 
 
@@ -21,6 +22,7 @@ function getCategory() {
 
 }
 function responseGetCategory(response) {
+    console.log(response)
     listCategory = response.data
     createTree()
 }
@@ -35,6 +37,7 @@ function createTree() {
         parentData = tree.getDataById(id)
         parent = tree.getNodeById(id)
         idCategory = id
+        console.log(idCategory)
         console.log(parentData)
      });
 
@@ -58,6 +61,7 @@ function reset() {
     $("#txtName").val('')
     $("#txtDescription").val('')
     $("#txtPrice").val('')
+    isEdit = false
 }
 function getData() {
     let nameCategory= $("#txtName").val()
@@ -79,7 +83,8 @@ function setData(data) {
     $("#txtDescription").val(data.description)
 
 }
-function openModal(isEdit = false) {
+function openModal(isEdits = false) {
+    isEdit = isEdits
     if (isEdit) {
         if (parent !== '') {
             modificarTexto('lblTitle','Editar Categoria')
@@ -89,7 +94,7 @@ function openModal(isEdit = false) {
         } else {
             modificarTexto('lblTitle','Nueva Categoria')
             generadorAlertas('error', 'Error', "Tiene que seleccionar una cuenta")
-            isEdit = false
+            //isEdit = false
         }
     } else {
             modificarTexto('lblTitle','Nueva Categoria')
@@ -107,7 +112,8 @@ function saveCategory() {
     let url = "/Category/insertCategory"
 
     if (validate()) {
-        if (idCategory !== 0) {
+        console.log(isEdit)
+        if (isEdit) {
             //update
             url = "/Category/updateCategory"
             console.log('edit')
@@ -126,18 +132,14 @@ function saveCategory() {
             }, category,"JSON","POST")
         } else {
             //Create
+            console.log('create')
 
             if (parent ==='') {
                 //Insert First Line
                 console.log('first lane')
-
-
-
             } else {
                 //Is Children
                 category.levelCategory = parentData.levelCategory+1
-
-
             }
 
             solicitudAjax(url, (response) => {
@@ -152,9 +154,6 @@ function saveCategory() {
 
                      generadorAlertas('error', 'Error', "Ha ocurrido un error")
                 }
-
-
-
 
             }, category, "JSON", "POST");
 
@@ -200,7 +199,7 @@ function responseDeleteCategory(response) {
             parent = ''
             generadorAlertas('success', 'Exito', "Eliminado Exitosamente")
     } else {
-            generadorAlertas('error', 'Error', "No puede eliminar la categoria,ya tiene categorias registradas")
+            generadorAlertas('error', 'Error', "No puede eliminar la categoria,ya tiene sub-categorias registradas")
     }
 }
 

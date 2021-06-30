@@ -37,9 +37,16 @@ namespace AccountingSystem.Controllers
          public JsonResult getLoteList(int idArticle)
         {
             var company = (Company)Session["company"];
-            var nroNote= bsnNote.getLoteList(idArticle);
+            var nroNote= bsnNote.getLoteList(idArticle,company.idCompany);
             return Json(new { data = nroNote}, JsonRequestBehavior.AllowGet);
         }
+         public JsonResult getLoteListTable(int idArticle)
+        {
+            var company = (Company)Session["company"];
+            var nroNote= bsnNote.getLoteListTable(idArticle,company.idCompany);
+            return Json(new { data = nroNote}, JsonRequestBehavior.AllowGet);
+        }
+
 
          public JsonResult getNotes(int typeNote)
         {
@@ -78,9 +85,9 @@ namespace AccountingSystem.Controllers
             var res = bsnNote.getEditDataNote(idNote);
             return Json(new { data = res}, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult deleteNote(int idNote,List<Lote> lotes)
+        public JsonResult deleteNote(int idNote,List<Lote> lotes,List<Detail> details)
         {
-            var res = bsnNote.deleteNote(idNote,lotes);
+            var res = bsnNote.deleteNote(idNote,lotes,details);
             return Json(new { data = res}, JsonRequestBehavior.AllowGet);
         }
 

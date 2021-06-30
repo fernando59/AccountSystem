@@ -61,6 +61,17 @@ function tableNote() {
                     }
                 }
             },
+             {
+                "render": function (row, type, set) {
+
+                     if (set.statusNote === 1) {
+                        return 'Abierto'
+                    } else {
+                        return 'Anulado'
+                    }
+                }
+            },
+
             {
                 "render": function (row, type, set) {
                     console.log(set)
@@ -71,7 +82,7 @@ function tableNote() {
                     if (status === 3) {
 
                         return `<div class="text-center">
-                        <a class="btn  btn-primary  btn-sm"   data-toggle="tooltip" data-placement="top" title="Reporte de Comprobante" href="http://192.168.100.8/Report/report/Report%20Account/ReportNote?idNote=${id}"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
+                        <a class="btn  btn-primary  btn-sm"   data-toggle="tooltip" data-placement="top" title="Reporte de Comprobante" href="http://192.168.100.8/Report/report/Report%20Account/ReportNoteSale?idNote=${id}"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
 
                         <button class="btn btn-sm btn-info" onClick="editVoucher(${id})" disabled data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span class="fas fa-eye" aria-hidden="true"></span></button>
                         </div>
@@ -80,7 +91,7 @@ function tableNote() {
                     } else {
 
                         return `<div class="text-center">
-                        <a class="btn  btn-primary  btn-sm"   data-toggle="tooltip" data-placement="top" title="Reporte de Comprobante" href="http://192.168.100.8/Report/report/Report%20Account/ReportNote?idNote=${id}"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
+                        <a class="btn  btn-primary  btn-sm"   data-toggle="tooltip" data-placement="top" title="Reporte de Comprobante" href="http://192.168.100.8/Report/report/Report%20Account/ReportNoteSale?idNote=${id}"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
                         <button class="btn btn-sm btn-info" onClick="editNote(${id})" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span class="fas fa-eye" aria-hidden="true"></span></button>
                         </div>
 

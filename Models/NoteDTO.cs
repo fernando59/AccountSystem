@@ -10,6 +10,7 @@ namespace AccountingSystem.Models
     {
         public Note note{ get; set; }
         public List<Lote> lotes{ get; set; }
+        public List<Detail> details{ get; set; }
         public Response  response { get; set; }
 
 

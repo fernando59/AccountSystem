@@ -1,12 +1,11 @@
 ﻿let listArticle = []
-let sendAllArticles =[]
+let NotesArticleList =[]
 let idArticle = 0
+let nroLote = 0
 let idNote =0
 let totalNote = 0
 let listTableLotes = []
 let editor
-let table
-
 
 
 $(document).ready(function () {
@@ -33,7 +32,8 @@ function getLoteList(id) {
 }
 function responseGetLoteList(response) {
     listTableLotes = response.data
-    tableLotes()
+    //tableLotes()
+    makeDropdownLotes()
     console.log(response)
 }
 
@@ -47,7 +47,7 @@ function getDataNoteEdit(idNote) {
 }
 function responseGetDataNote(responses) {
     console.log(responses)
-    const { response, note, lotes } = responses.data
+    const { response, note, lotes,details } = responses.data
     if (response.Done) {
         $("#txtDescriptionNote").val(note.description)
         $("#txtNroNote").val(note.nroNote)
@@ -60,9 +60,14 @@ function responseGetDataNote(responses) {
             $("#btnNullNote").hide()
         }
         //localStorage.setItem('')
-        sendAllArticles = lotes
-        tableArticles()
-        let url = `http://192.168.100.8/Report/report/Report%20Account/ReportNote?idNote=${idNote}`
+        if (note.typeNote == 1) {
+
+            NotesArticleList = lotes
+        } else {
+            NotesArticleList = details
+        }
+        tableDetails()
+        let url = `http://192.168.100.8/Report/report/Report%20Account/ReportNoteSale?idNote=${idNote}`
         $("#btnPrintNote").attr("href",url)
 
         disableAll()
@@ -97,7 +102,6 @@ function responseArticle(response) {
 }
 
 function makeDropdown() {
-    console.log('make')
     let list = ''
     for (let i = 0; i < listArticle.length; i++) {
         list += `<option value =${listArticle[i].idArticle}> ${listArticle[i].nameArticle}</option>`
@@ -106,45 +110,64 @@ function makeDropdown() {
     $("#dropdownArticle").empty().append(list)
     $("#dropdownArticle").select2()
     getLoteList(listArticle[0].idArticle)
+    $("#txtPrice").val(listArticle[0].salePrice)
+}
+
+function makeDropdownLotes() {
+    let list = ''
+    for (let i = 0; i < listTableLotes.length; i++) {
+        list += `<option value =${listTableLotes[i].nroLote}> ${listTableLotes[i].nroLote}-Stock : ${listTableLotes[i].stock}</option>`
+    }
+
+    $("#dropdownLote").empty().append(list)
+    $("#dropdownLote").select2()
+    //getLoteList(listArticle[0].idArticle)
 }
 
 /**-------------------------TABLE -*------------------------------------ */
 
-function tableArticles() {
-    $("#tblArticles").DataTable({
-        "data": sendAllArticles,
+function tableDetails() {
+    $("#tblDetails").DataTable({
+        "data": NotesArticleList,
         "destroy": true,
         "searching": false,
         "ordering": false,
         "bLengthChange": false,
         "bInfo": false,
+        "height":300,
         "paging": false,
         "pageLength": 55,
         //"scroller": true,
+        //"fixedHeader": {
+        //    header: true,
+        //    footer: true
+        //},
         columnDefs: [
             //{ responsivePriority: 1, targets: 0 },
             //{ responsivePriority: 1, targets: -1 },
+            {targets:4, className: 'dt-body-right text-right'},
             {targets:3, className: 'dt-body-right text-right'},
-            {targets:2, className: 'dt-body-right text-right'},
             {targets:1, className: 'dt-body-right'},
             {targets:0, className: 'dt-body-right'},
         ],
         "columns": [
             { "data": "article", "autoWidth": true },
-            { "data": "quantityLote", "autoWidth": true },
-            { "data": "price", "autoWidth": true },
+            { "data": "nroLote", "autoWidth": true },
+            { "data": "quantityDetail", "autoWidth": true },
+            { "data": "priceSale", "autoWidth": true },
             { "data": "subTotal", "autoWidth": true },
             {
                 "render": function (row, type, set) {
                     let id = set.idArticle
+                    let nroLote = set.nroLote
                     if (parseInt(idNote) !== 0 ) {
                          $('button[name="bt"]').prop('disabled',true)
                     }
 
                         return `
                         <div class="text-center">
-                        <button name="bt" class="btn btn-sm btn-info bt" onClick="editArticle('${id}')" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span class="fas fa-pencil-alt" aria-hidden="true"></span></button>
-                        <button name="bt" class="btn btn-sm btn-danger bt" onClick="deleteArticle('${id}')" data-toggle="tooltip" data-placement="top" title="Eliminar Lote"><span class="fas fa-trash" aria-hidden="true"></span></button>
+                        <button name="bt" class="btn btn-sm btn-info bt" onClick="editDetail('${nroLote}','${id}')" data-toggle="tooltip" data-placement="top" title="Realizar modificaciones"><span class="fas fa-pencil-alt" aria-hidden="true"></span></button>
+                        <button name="bt" class="btn btn-sm btn-danger bt" onClick="deleteDetail('${nroLote}','${id}')" data-toggle="tooltip" data-placement="top" title="Eliminar Lote"><span class="fas fa-trash" aria-hidden="true"></span></button>
                         </div>
                         `;
                 }
@@ -188,50 +211,41 @@ function getData() {
 }
 
 function getDataModal() {
-    let article = $("#dropdownArticle option:selected").text().trim()
     let idArticle = $("#dropdownArticle").val()
-    let dueDate = $("#txtDueDate").val()
-    let quantityLote = $("#txtQuantity").val()
-    let price = $("#txtPrice").val()
+    let article = $("#dropdownArticle option:selected").text().trim()
+    let nroLote = parseInt($("#dropdownLote").val())
+    let quantityDetail = parseInt($("#txtQuantity").val())
+    let priceSale = parseFloat( $("#txtPrice").val())
     let subTotal = $("#txtSubTotal").val()
     return {
-        article,
-        dueDate,
-        quantityLote,
-        price,
+        idArticle,
+        nroLote,
+        quantityDetail,
+        priceSale,
         subTotal,
-        idArticle
+        article
     }
 }
 function setDataModal(data) {
     console.log(data)
-    $("#dropdownArticle").val(data.idArticle)
+    $("#dropdownArticle").val(parseInt(data.idArticle))
     $("#dropdownArticle option:selected").text(data.article)
-    $("#txtDueDate").val(data.dueDate)
-    $("#txtQuantity").val(data.quantityLote)
-    $("#txtPrice").val(data.price)
+    $("#dropdownLote").val(data.nroLote)
+    $("#txtQuantity").val(data.quantityDetail)
+    $("#txtPrice").val(data.priceSale)
     $("#txtSubTotal").val(data.subTotal)
 }
 
 function resetModal() {
      $("#dropdownArticle").val()
-     $("#txtDueDate").val('')
      $("#txtQuantity").val('')
-     $("#txtPrice").val('')
+     //$("#txtPrice").val('')
      $("#txtSubTotal").val('0')
-     idArticle = 0
+    idArticle = 0
+    nroLote = 0
 }
 function openModal(isEdit = false) {
     $("#modalNote").modal({ show: true, keyboard: false, backdrop: 'static' })
-//    if (isEdit) {
-//        modificarTexto('txtTitleAddVoucher','Editar Detalle de Comprobante')
-//        modificarTexto('btnInsertForm', 'Guardar')
-//    } else {
-//    let gloss =$("#txtgloss").val()
-//     $("#txtgloss2").val(gloss)
-//        modificarTexto('txtTitleAddVoucher','Nuevo Detalle de Comprobante')
-//        modificarTexto('btnInsertForm', 'Guardar')
-//    }
 }
 
 
@@ -240,13 +254,6 @@ function closeModal() {
     resetModal()
 }
 
-$("#txtPrice").on("keyup", function (e) {
-    let { value } = e.target
-    let quantityLote = $("#txtQuantity").val()
-    if (quantityLote !== "" || parseInt(quantityLote) > 0) {
-        $("#txtSubTotal").val(quantityLote * value)
-    }
-})
 $("#txtQuantity").on("keyup", function (e) {
     let { value } = e.target
     let price = $("#txtPrice").val()
@@ -263,8 +270,8 @@ function saveArticle() {
 
         if (idArticle !== 0) {
             //Edit
-            console.log(sendAllArticles)
-            let without = sendAllArticles.filter(item => parseInt(item.idArticle) !== parseInt(idArticle))
+            console.log(NotesArticleList)
+            let without = NotesArticleList.filter(item => parseInt(item.idArticle) !== parseInt(idArticle))
             console.log(without)
             let filt = without.filter(item => item.article == data.article)
             console.log(filt)
@@ -274,16 +281,16 @@ function saveArticle() {
             } else {
                 console.log('enter to edit')
 
-                let index = sendAllArticles.findIndex(item => parseInt(item.idArticle) === parseInt(idArticle))
-                sendAllArticles[index].price = data.price
-                sendAllArticles[index].quantityLote = data.quantityLote
-                sendAllArticles[index].subTotal = data.subTotal
-                sendAllArticles[index].article = data.article
-                sendAllArticles[index].idArticle = data.idArticle
+                let index = NotesArticleList.findIndex(item => parseInt(item.idArticle) === parseInt(idArticle))
+                NotesArticleList[index].priceSale = data.price
+                NotesArticleList[index].quantityDetail= data.quantityDetail
+                NotesArticleList[index].subTotal = data.subTotal
+                NotesArticleList[index].article = data.article
+                NotesArticleList[index].idArticle = data.idArticle
             }
         } else {
             //Create
-            let without = sendAllArticles.filter(item => item.article === data.article)
+            let without = NotesArticleList.filter(item => item.article === data.article)
             console.log(without.length)
             if (without.length > 0) {
                 generadorAlertas('error', 'Error', 'Ya existe un articulo registrado')
@@ -291,11 +298,11 @@ function saveArticle() {
             } else {
                 totalNote += parseFloat(data.subTotal)
                 $("#txtTotal").text(totalNote)
-                sendAllArticles.push(data)
+                NotesArticleList.push(data)
             }
         }
         console.log('save---------------------')
-        console.log(sendAllArticles)
+        console.log(NotesArticleList)
         tableArticles()
         closeModal()
     }
@@ -326,15 +333,17 @@ function saveAll() {
 }
 
 
-function editArticle(id) {
-    idArticle =id
-    let find = sendAllArticles.find(item => parseInt(item.idArticle) === parseInt(id))
+function editDetail(nroLotes,idArticles) {
+    idArticle = idArticles
+    nroLote = nroLotes
+    let find = NotesArticleList.find(item => parseInt(item.idArticle) === parseInt(idArticles) && item.nroLote == nroLotes)
     setDataModal(find)
     openModal(true)
 }
 
-function deleteArticle(id) {
-    let index = sendAllArticles.findIndex(item => item.idArticle == id)
+function deleteDetail(idLote, idArticle) {
+    console.log(idLote,idArticle)
+    let index = NotesArticleList.findIndex(item => item.nroLote == idLote && item.idArticle == idArticle)
   Swal.fire({
         title: 'Eliminar',
         text: "¿Esta seguro que desea eliminar el lote de articulos?",
@@ -347,11 +356,11 @@ function deleteArticle(id) {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            let find = sendAllArticles.find(item => parseInt(item.idArticle) === parseInt(id))
-            sendAllArticles.splice(index, 1)
+            let find = NotesArticleList.find(item => parseInt(item.nroLote) === parseInt(idLote) && item.idArticle == idArticle)
+            NotesArticleList.splice(index, 1)
             totalNote -= find.subTotal
             $("#txtTotal").text(totalNote)
-            tableArticles()
+            tableDetails()
         }
     })
 
@@ -362,14 +371,11 @@ function deleteArticle(id) {
 function sendAll() {
 
     let url = "/Note/insertSaleNote"
-    if (sendAllArticles.length > 0) {
-
-        if (idArticle !== 0) {
-        }
+    if (NotesArticleList.length > 0) {
         if ($("#txtDescriptionNote").val().trim() !== '') {
         let data = {
             note: getData(),
-            lotes: sendAllArticles
+            details: NotesArticleList
         }
         console.log(data)
         solicitudAjax(url, responseSendAll, data, "JSON", "POST");
@@ -377,21 +383,24 @@ function sendAll() {
         generadorAlertas('error', 'Error', 'El campo descripcion no puede estar vacio')
         }
     } else {
-        generadorAlertas('error', 'Error', 'Debe insertar por lo menos un lote')
+        generadorAlertas('error', 'Error', 'Debe insertar por lo menos un articulo')
     }
 }
 
 function responseSendAll(responses) {
     console.log(responses)
-    const {lotes,note,response} = responses.data 
+    const {lotes,note,response,details} = responses.data 
     if (response.Done) {
         idNote = note.idNote
-        sendAllArticles  = lotes
+        NotesArticleList = details
         $("#txtNroNote").val(note.nroNote)
         $("#btnNullNote").show()
         $("#btnPrintNote").show()
         $("#btnSave").prop('disabled',true)
         generadorAlertas('success', 'Exito', 'Agregado exitosamente')
+       let url = `http://192.168.100.8/Report/report/Report%20Account/ReportNoteSale?idNote=${idNote}`
+        $("#btnPrintNote").attr("href",url)
+
     } else {
 
         generadorAlertas('error', 'Error', 'Ha ocurrido un error')
@@ -415,9 +424,8 @@ function nullNote() {
             const id = idNote
     let data = {
         idNote: id,
-        lotes:sendAllArticles
+        details:NotesArticleList
             }
-            disableAll()
             solicitudAjax(url, responseNullNote, data, "JSON", "POST");
 
 
@@ -429,6 +437,8 @@ function responseNullNote(response) {
     if (response.data.Done) {
         generadorAlertas('success', 'Exito', 'Anulado exitosamente')
         $("#btnNullNote").prop('disabled',true)
+        disableAll()
+        //tableDetails()
     } else {
         
         generadorAlertas('error', 'Error', 'Ha ocurrido un error')
@@ -436,8 +446,12 @@ function responseNullNote(response) {
 }
 
 $("#dropdownArticle").change(function (e) {
-    let id =e.target.value
+    let id = e.target.value
+    console.log(id)
+    let article = listArticle.find(item => item.idArticle === parseInt( id))
+    console.log(article)
     getLoteList(id)
+    $("#txtPrice").val(article.salePrice)
 });
 
 
@@ -465,7 +479,7 @@ function back() {
         reverseButtons: true
     }).then((result) => {
         if (result.value) {
-            window.location = "https://localhost:44348/AccountingSystem/Note/List";
+            window.location = "https://localhost:44348/AccountingSystem/Note/ListSale";
         }
     })
 
@@ -484,103 +498,66 @@ function disableAll() {
         //$("#btnNullNote").prop('disabled',true)
 }
 
-/*-----------------------------------------------Second Table*/
-function tableLotes() {
-    table = $("#tblLotes").DataTable({
-        "data": listTableLotes,
-        "destroy": true,
-        "searching": false,
-        "ordering": false,
-        "bLengthChange": false,
-        "bInfo": false,
-        "paging": false,
-        "pageLength": 55,
-        "scrollY": 300,
-        "select": true,
-        //"scroller": true,
-        columnDefs: [
-            //{ responsivePriority: 1, targets: 0 },
-            //{ responsivePriority: 1, targets: -1 },
-            {targets:3, className: 'dt-body-right text-right'},
-            {targets:2, className: 'dt-body-right text-right'},
-            {targets:1, className: 'dt-body-right'},
-            { targets: 0, className: 'dt-body-right' },
-            { className: 'select-checkbox', targets:0,orderable:false }
-        ],
-        //select: {
-        //    style: 'os',
-        //    selector: 'td:first-child'
-        //},
-        "columns": [
-            //{
-            //    "render": function (row, type, set) {
-
-            //        return `<input type="checkbox" class="editor-active" />`
-            //    }
-            //},
-            { "data": "nroLote", "autoWidth": true },
-            { "data": "quantityLote", "autoWidth": true },
-            { "data": "stock", "autoWidth": true },
-            {
-                "render": function (row, type, set) {
-                    let idNote = set.idNote
-                    let nro = set.nroLote
-                    if (parseInt(idNote) !== 0 ) {
-                         $('button[name="bt"]').prop('disabled',true)
-                    }
-
-                        return `
-                        <div class="text-center">
-                            <input type="number" class="form-control" value="0" name="-send-${idNote}-${nro}-"/>
-                        </div>
-                        `;
-                }
-            }
-        ],
-        "drawCallback": function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        },
-         rowCallback: function (row, data) {
-             // Set the checked state of the checkbox in the table
-            $('input.editor-active', row).prop('checked', data.active == 1);
-        }
-
-    });
-}
-$('#tblLotes').on('change', 'input.editor-active', function (e) {
-    console.log(e.target.value)
-        //e.edit($(this).closest('tr'), false)
-        //.set('active', $(this).prop('checked') ? 1 : 0)
-        //.submit();
-});
-
 
 function saveDetailNote() {
-    let data = table.$('input, select').serialize();
-    let arr = data.split('-')
-    let sendDetail = []
-    let idArticle = $("#dropdownArticle").val()
-    for (let i = 1; i < arr.length; i=i+4) {
-        let idNote = arr[i+1]
-        let nro = arr[i + 2]
-        let quantity = ""
-        if (i+4 === arr.length) {
-            quantity = arr[i + 3].substring(1, arr[i + 3].length)
-        } else {
-
-            quantity = arr[i + 3].substring(1, arr[i + 3].length - 1)
-        }
-        if (parseInt(quantity) !== 0) {
-            sendDetail.push({ idNote, nro, quantity, idArticle })
-        }
+    let data = getDataModal()
+    if (listTableLotes.length === 0) {
+        generadorAlertas('error', 'Error', 'No existen lotes')
+        return
     }
 
-    console.log(sendDetail)
-    if (sendDetail.length !== 0) {
-         let url = "/Article/getArticles"
-        solicitudAjax(url, responseArticle, {}, "JSON", "POST");
+    if (idArticle !== 0 && nroLote !== 0) {
+        //update
+        console.log('edit')
+        let without = NotesArticleList.filter(item => parseInt(item.nroLote) !== parseInt(nroLote))
+        console.log(without)
+        let filt = without.filter(item => item.nroLote == data.nroLote)
+        if (filt.length >= 1) {
+            generadorAlertas('error', 'Error', 'Ya existe un lote registrado')
+            return
+        } else {
+
+            let index = NotesArticleList.findIndex(item => parseInt(item.nroLote) === parseInt(nroLote))
+            totalNote -= NotesArticleList[index].quantityDetail * NotesArticleList[index].priceSale
+            NotesArticleList[index].quantityDetail = data.quantityDetail
+            NotesArticleList[index].priceSale = data.priceSale
+            NotesArticleList[index].idArticle = data.idArticle
+            NotesArticleList[index].article = data.article
+            NotesArticleList[index].subTotal = data.subTotal
+            totalNote += data.quantityDetail * data.priceSale
+             $("#txtTotal").text(totalNote)
+            closeModal()
+            tableDetails()
+
+        }
 
     } else {
-        generadorAlertas('error', 'Error', 'Debe seleccionar un lote')
+        //insert
+        console.log(idArticle)
+        let findLote = listTableLotes.find(item => item.nroLote === data.nroLote && parseInt(item.idArticle) === parseInt(data.idArticle))
+        if (parseInt(data.quantityDetail) === 0 || data.quantityDetail ==="") {
+            generadorAlertas('error', 'Error', 'La cantidad debe ser mayor a cero')
+        } else {
+
+            let without = NotesArticleList.filter(item => parseInt(item.nroLote) === parseInt(data.nroLote) && parseInt(item.idArticle) === parseInt(data.idArticle))
+
+            if (without.length > 0) {
+                generadorAlertas('error', 'Error', 'Ya existe un lote registrado')
+                return
+            }
+            if (findLote.stock - data.quantityDetail >= 0) {
+
+                console.log(findLote)
+                console.log(data)
+                NotesArticleList.push(data)
+                closeModal()
+                totalNote += data.priceSale* data.quantityDetail
+                $("#txtTotal").text(totalNote)
+                tableDetails()
+            } else {
+                generadorAlertas('error', 'Error', 'La cantidad supera el stock del lote')
+            }
+        }
+
     }
 }

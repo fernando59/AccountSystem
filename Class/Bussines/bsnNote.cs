@@ -15,10 +15,15 @@ namespace AccountingSystem.Class.Bussines
         {
             return classNote.getNotes(idCompany,typeNote);
         }
-       public List<Lote> getLoteList(int idArticle)
+       public List<Lote> getLoteList(int idArticle, int idCompany)
         {
-            return classNote.getLoteList(idArticle);
+            return classNote.getLoteList(idArticle,idCompany);
         }
+        public List<Lote> getLoteListTable(int idArticle,int idCompany)
+        {
+            return classNote.getLoteListTable(idArticle,idCompany);
+        }
+
 
 
         public DetailDTO insertSaleNote(Note note, List<Detail> details)
@@ -40,9 +45,9 @@ namespace AccountingSystem.Class.Bussines
         {
             return classNote.getEditDataNote(idNote);
         }
-        public Response deleteNote(int idNote,List<Lote> lotes)
+        public Response deleteNote(int idNote,List<Lote> lotes, List<Detail> details)
         {
-            return classNote.deleteNote(idNote,lotes);
+            return classNote.deleteNote(idNote,lotes,details);
         }
 
 

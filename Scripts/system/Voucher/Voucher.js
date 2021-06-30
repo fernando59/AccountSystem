@@ -8,6 +8,7 @@ let listDetailVoucher = []
 let listDetailVoucherSend = []
 let idDetailVoucher = 0
 let idVoucher = 0
+let idAccount = 0
 let statusVoucher = 0
 let currencyMain ="Bolivianos"
 let currencyAltern ="Dolares"
@@ -155,7 +156,7 @@ function getDataVoucher() {
     let gloss= $("#txtgloss").val().trim()
     let tc = $("#txtExchange").val()
     let typeVoucher = $("#dropdownTypeVoucher").val()
-    let  idCurrency= $("#dropdownCurrency").val()
+    let idCurrency= $("#dropdownCurrency").val()
     let dateVoucher = $("#txtdateVoucher").val()
     let idVoucher = 0
     return {
@@ -182,16 +183,14 @@ function sendAll() {
                  voucher: getDataVoucher(),
                   listVoucherDetail: listDetailVoucher
              }
-            let tc = $("#txtExchange").val()
-            let account = $("#dropdownCurrency option:selected").text().trim()
             listDetailVoucher.map(item => {
                 console.log(item)
                 let amountOwed = item.amountOwed
                 let amountAssets = item.amountAssets
-                item.amountOwed = parseFloat(convertAmountOwedCurrencySave(amountOwed, tc, account))
-                item.amountOwedAlt = parseFloat( convertAmountOwedAltCurrencySave(amountOwed, tc, account))
-                item.amountAssets = parseFloat(convertAmountAssetsCurrencySave(amountAssets, tc, account))
-                item.amountAssetsAlt =parseFloat(convertAmountAssetsAltCurrencySave(amountAssets, tc, account))
+                item.amountOwed = parseFloat(amountOwed)
+                item.amountOwedAlt = 0
+                item.amountAssets = parseFloat(amountAssets)
+                item.amountAssetsAlt =0
 
             })
             console.log(listDetailVoucher)
@@ -230,7 +229,7 @@ function responseSendAll(response) {
 /*--------------------------------------------------------Modal----------------------------------*/
 function getDataVoucherDetail() {
     let idVoucherDetail= 0
-    let idAccount= $('#dropdownAccount').val()
+    let idAccount=parseInt( $('#dropdownAccount').val())
     let tc = $("#txtExchange").val()
     let account = $('#dropdownAccount option:selected').text().trim()
     let gloss = $("#txtgloss2").val().trim()
@@ -293,8 +292,9 @@ function saveVoucherDetail() {
     }else if (!$("#dropdownAccount").val()) {
         generadorAlertas('error', 'Error', 'Tiene que seleccionar una cuenta')
     }
-     else {
-              if (idDetailVoucher === 0) {
+    else {
+        console.log(idDetailVoucher)
+        if (idAccount === 0) {
             //Agregar
                   if (filterAccount.length > 0) {
                       generadorAlertas('error', 'Error', 'Ya existe una cuenta en el detalle')
@@ -317,18 +317,19 @@ function saveVoucherDetail() {
                   }
         } else {
             //Editar
-                console.log(listDetailVoucher)
-                  console.log(data.account)
-                  listDetailVoucher.map(item => console.log(item.account))
-                  let without = listDetailVoucher.filter(item => item.account.toString() === data.account)
-            console.log(without.length)
-            if (without.length >= 1) {
+            let without = listDetailVoucher.filter(item => item.idAccount !== parseInt( idAccount))
+                  console.log(without)
+                  let filt = without.filter(item => item.idAccount == data.idAccount)
+                  console.log(filt)
+                  console.log(idAccount)
+            if (filt.length >= 1) {
                 generadorAlertas('error', 'Error', 'Ya existe una cuenta registrada')
                 return
             } else {
                 let index = listDetailVoucher.findIndex(item => item.idVoucherDetail === idDetailVoucher)
                  listDetailVoucher[index].gloss = data.gloss
-                 listDetailVoucher[index].idAccount = data.idAccount
+                listDetailVoucher[index].idAccount = data.idAccount
+                listDetailVoucher[index].account = data.account
                  listDetailVoucher[index].amountAssets = data.amountAssets
                 listDetailVoucher[index].amountOwed = data.amountOwed
                 listDetailVoucher[index].account = data.account
@@ -392,7 +393,7 @@ function tableDetailVoucher() {
             //{ "data": "amountAssets", "autoWidth": true },
             {
                 "render": function (row, type, set) {
-                    let ids = set.idVoucherDetail
+                    let ids = parseInt(set.idAccount)
                     if (parseInt(idVoucher) !== 0 && parseInt(set.statusVoucher) === 3) {
                          $('button[name="bt"]').prop('disabled',true)
                     }
@@ -417,8 +418,8 @@ function tableDetailVoucher() {
 
 
 function deleteDetailVoucher(id) {
-    let index = listDetailVoucher.findIndex(item => item.idVoucherDetail == id)
-    let detailVucher = listDetailVoucher.find(item => item.idVoucherDetail == id)
+    let index = listDetailVoucher.findIndex(item => item.idAccount == id)
+    let detailVucher = listDetailVoucher.find(item => item.idAccount == id)
     console.log(listDetailVoucher)
     console.log(id,detailVucher)
   Swal.fire({
@@ -445,8 +446,9 @@ function deleteDetailVoucher(id) {
 }
 function editDetailVoucher(id) {
     console.log(id)
-    let findCompanyVoucher = listDetailVoucher.find(item => item.idVoucherDetail == id)
+    let findCompanyVoucher = listDetailVoucher.find(item => item.idAccount == id)
     idDetailVoucher = findCompanyVoucher.idVoucherDetail
+    idAccount = id
     sumTotalDebe -= parseInt(findCompanyVoucher.amountOwed)
     sumTotalHaber -= parseInt(findCompanyVoucher.amountAssets)
 
@@ -486,7 +488,8 @@ function resetDetailVoucher() {
   $('#txtHaber').val("")
   $("#txtDebe").attr('readonly', false);
   $("#txtHaber").attr('readonly', false);
-  idDetailVoucher = 0
+    idDetailVoucher = 0
+    idAccount =0
 }
 
 function nullVoucher() {
@@ -538,69 +541,6 @@ function disableAll() {
         $("#btnNullVoucher").prop('disabled',true)
 }
 
-
-
-function convertAmountOwedCurrencySave(amountOwed, tc, account) {
-    console.log(amountOwed, account, currencyMain)
-    if (currencyMain.toString().trim() == "Bolivianos" && account.toString().trim() == "Dolares") {
-        console.log('entro aca')
-        return parseFloat( amountOwed / tc)
-    } else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Euros") {
-        console.log('entro aca 2')
-        return parseFloat( amountOwed / tc)
-    } else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Bolivianos") {
-        console.log('entro aca 3')
-        return parseFloat( amountOwed)
-    } else {
-        return parseFloat(amountOwed)
-    }
-}
-function convertAmountOwedAltCurrencySave(amountOwedAlt, tc, account) {
-    if (currencyMain.toString().trim() == "Bolivianos" && account.toString().trim() == "Dolares") {
-        console.log('entro aca')
-        return amountOwedAlt
-    } else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Euros") {
-        console.log('entro aca2')
-        return amountOwedAlt * tc
-    } else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Bolivianos") {
-        console.log('entro aca2')
-        return amountOwedAlt *tc
-    } else {
-        console.log('no entro aca2')
-        return amountOwedAlt
-    }
-}
-
-function convertAmountAssetsCurrencySave(amountAssetsAlt, tc, account) {
-    if (currencyMain.toString().trim() == "Bolivianos" && account.toString().trim() == "Dolares") {
-        return amountAssetsAlt / tc
-    } else if (currencyMain == "Bolivianos" && account == "Euros") {
-        return amountAssetsAlt / tc
-    }
-    else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Bolivianos") {
-        return amountAssetsAlt 
-    }
-    if (currencyMain == "Dolares" && account == "Bolivianos") {
-        return amountAssetsAlt / tc
-    } else if (currencyMain == "Euros" && account == "Euros") {
-        return amountAssetsAlt / tc
-    }
-}
-function convertAmountAssetsAltCurrencySave(amountAssetsAlt, tc, account) {
-    if (currencyMain.toString().trim() == "Bolivianos" && account.toString().trim() == "Dolares") {
-        return amountAssetsAlt
-    } else if (currencyMain == "Bolivianos" && account == "Euros") {
-        return parseFloat( amountAssetsAlt * tc)
-    }
-    else if (currencyMain.toString().trim() == "Bolivianos" && account.trim() == "Bolivianos") {
-        return parseFloat( amountAssetsAlt * tc)
-    }
-    if (currencyMain == "Dolares" && account == "Bolivianos") {
-        return amountAssetsAlt / tc
-    } else if (currencyMain == "Euros" && account == "Euros") {
-        return amountAssetsAlt * tc
-    }
-}
 
 
 

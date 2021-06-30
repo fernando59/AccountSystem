@@ -4,12 +4,51 @@
     ViewBag.Title = "Index";
 }
 <style>
-    .table-scroll{
+   /* .table-scroll{
         overflow-y:auto;
         overflow-x:hidden;
         height:260px;
+    }*/
+    .tableFixHead {
+        overflow-y: auto;
+        height: 360px;
+        overflow-x:hidden;
     }
-    .select2-choices {
+
+        .tableFixHead thead th {
+            height:30px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .tableFixHead tfoot th{
+            position: sticky;
+            bottom: 0;
+            z-index: 1;
+
+        }
+        tfoot{
+            height:30px;
+        }
+        tbody{
+            height:300px;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        /*border-collapse: collapse;*/
+        width: 100%;
+        /*height:330px;*/
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background: #eee;
+    }
+     .select2-choices {
         min-height: 150px;
         max-height: 150px;
         overflow-y: auto;
@@ -38,7 +77,7 @@
             <div class="form-group text-right">
                <button class="btn btn-secondary" onclick="back()"><span class="fas fa-arrow-left" aria-hidden="true"></span></button>
                <button class="btn btn-danger" onClick="nullNote()" id="btnNullNote" style="display:none;" data-toggle="tooltip" data-placement="top" title="Anular Nota "><span class="fas fa-trash" aria-hidden="true"></span></button>
-               <a class="btn  btn-primary " id="btnPrintNote" style="display:none;"  data-toggle="tooltip" data-placement="top" title="Reporte de Nota" href="http://192.168.100.8/Report/report/Report%20Account/ReportVoucher"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
+               <a class="btn  btn-primary " id="btnPrintNote" style="display:none;"  data-toggle="tooltip" data-placement="top" title="Reporte de Nota" href="http://192.168.100.8/Report/report/Report%20Account/ReportNoteSale"  target="_blank"><span class="glyphicon glyphicon-check" aria-hidden="true"><i class="fas fa-book"></i></span></a>
                <button class="btn btn-primary" onclick="sendAll()" id="btnSave"><span class="fas fa-save" aria-hidden="true"></span></button>
                </div>
 
@@ -53,17 +92,19 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label>Estado </label>
-                            <input type="text" name="name" value="Abierto" readonly  class="form-control" id="txtStatusNote"/>
-                        </div>
-                        <div class="form-group">
                             <label>
                                 Fecha
                             </label>
 
-                            <input type="date" id="txtDate" class="form-control" readonly/>
+                            <input type="date" id="txtDate" class="form-control" />
                         </div>
                     </div>
+                <div class="col"> 
+                        <div class="form-group">
+                            <label>Estado </label>
+                            <input type="text" name="name" value="Abierto" readonly  class="form-control" id="txtStatusNote"/>
+                        </div>
+                </div>
                 </div>
             <div class="form-group">
                 <label>Descripcion</label>
@@ -73,34 +114,37 @@
             <button class="btn btn-primary mb-2" onclick="openModal()" id="bntAddLote">
                 +
             </button>
-            <div  class="table-scroll">
+            <div  class="tableFixHead">
 
-            <table id="tblArticles" class="table table-hover" style="cursor:pointer;">
+            <table id="tblDetails" class="table table-hover" style="cursor:pointer;">
                 <thead>
                     <tr>
                         <th>Articulo</th>
+                        <th>N° Lote</th>
                         <th>Cantidad </th>
                         <th>Precio</th>
                         <th>Sub-Total</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  class="table-scroll">
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
                 </tbody>
-                <!--<tfoot>
-                    <tr>-->
-                        @*<th colspan="2" style="text-align:right">TOTAL : </th>*@
-                        @*<th id="txtDebeTotal" class="text-right">0</th>*@
-                        @*<th id="txtHaberTotal" class="text-right">0</th>*@
-                        <!--<th></th>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" style="text-align:right">TOTAL : </th>
+                        <th id="txtTotal" class="text-right">0</th>
+                        <th></th>
                     </tr>
-                </tfoot>-->
+                </tfoot>
             </table>
               </div>
-               <div style="" class="text-center pt-3">
+               @*<div style="" class="text-center pt-3">
                 <label style="margin-left:155px;"><strong>TOTAL : </strong></label>
                 <strong><spam id="txtTotal" class="ml-20" style="margin-left:220px">0</spam></strong>
-            </div>
+            </div>*@
 
 
                </div>

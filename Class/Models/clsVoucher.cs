@@ -41,8 +41,8 @@ namespace AccountingSystem.Class.Models
 
             }
         }
-      public  decimal getExchange(int idCompany,int idUser)
-        {
+    public  decimal getExchange(int idCompany,int idUser)
+    {
             using (var sqlConnection = new SqlConnection(conexion))
             {
                 string query= "select exchange from tblCompanyCurrency where idCompany ="+idCompany+" and idUser="+idUser+" and active =1";
@@ -50,7 +50,7 @@ namespace AccountingSystem.Class.Models
                 return serieVoucher;
 
             }
-        }
+    }
           public List<Account> getAccountList(int idCompany,int idUser)
         {
 
@@ -92,7 +92,7 @@ namespace AccountingSystem.Class.Models
                             VoucherDTO voucherDTO = new VoucherDTO();
                        //Validacion de periodos
                         string dateStart = voucher.dateVoucher.ToString("yyyy-MM-dd");
-                        string getValidatePeriods = "select * from  tblPeriods tp,tblManagements tm where tm.idCompany = " + voucher.idCompany + " and tm.idManagement = tp.idManagement and '" +dateStart + "' > tp.startDate and '" + dateStart+ "' < tp.endDate";
+                        string getValidatePeriods = "select * from  tblPeriods tp,tblManagements tm where tm.idCompany = " + voucher.idCompany + " and tm.idManagement = tp.idManagement and '" +dateStart + "' >= tp.startDate and '" + dateStart+ "' <= tp.endDate";
                         int countPeriods = sqlConnection.Query(getValidatePeriods, commandType: System.Data.CommandType.Text, transaction: transaction).Count();
                         if (countPeriods == 0)
                         {
@@ -106,7 +106,7 @@ namespace AccountingSystem.Class.Models
                             //Create
                            //getVoucherManagement Apertura
                         string getVoucherManagement = "select tv.idVoucher,tv.gloss,tv.dateVoucher,tv.typeVoucher from tblVoucher tv,tblCompanies tc,tblManagements tm where tv.idCompany = tc.idCompany and tc.idCompany = tm.idCompany" +
-                                " and tc.idCompany ="+voucher.idCompany+" and '"+dateStart+"'>=tm.startDate and '"+dateStart+"'<=tm.endDate  and tv.dateVoucher >= tm.startDate and tv.dateVoucher <= tm.endDate and tm.state = 1 and tv.typeVoucher=4 and tv.statusVoucher =1";
+                                " and tc.idCompany ="+voucher.idCompany+" and '"+dateStart+"'>= tm.startDate and '"+dateStart+"'<=tm.endDate  and tv.dateVoucher >= tm.startDate and tv.dateVoucher <= tm.endDate and tm.state = 1 and tv.typeVoucher=4 and tv.statusVoucher =1";
                         var voucherList = sqlConnection.Query<Voucher>(getVoucherManagement, commandType: System.Data.CommandType.Text,transaction: transaction).ToList();
                         if (voucherList.Count > 0 && voucher.typeVoucher ==4)
                         {
@@ -115,6 +115,9 @@ namespace AccountingSystem.Class.Models
                         }
 
                          voucherDTO.voucherDetail = new List<VoucherDetail>();
+                            //Get Currency
+                            string getCurrencyMain = "select * from tblCompanyCurrency where idCompany = "+voucher.idCompany+" and active = 1 ";
+                            var currency  = sqlConnection.Query<CompanyCurrency>(getCurrencyMain, commandType: System.Data.CommandType.Text, transaction: transaction).FirstOrDefault();
 
                          string sqlInsert = "insert into tblVoucher (serieVoucher,gloss,dateVoucher,tc,typeVoucher,idUser,idCurrency,idCompany) values " +
                         "(@serieVoucher,@gloss,@dateVoucher,@tc,@typeVoucher,@idUser,@idCurrency,@idCompany)SELECT SCOPE_IDENTITY()";
@@ -127,9 +130,29 @@ namespace AccountingSystem.Class.Models
                             "(@numberVoucher,@gloss,@amountOwed,@amountAssets,@amountOwedAlt,@amountAssetsAlt,@idUser,"+idVoucher+",@idAccount)";
                                  foreach(VoucherDetail voucherDetail in listVoucher)
                                  {
-                                 voucherDetail.idUser = 1;
-                                 voucherDTO.voucherDetail.Add(voucherDetail);
-                                 sqlConnection.Execute(sqlInsertVoucherDetail,voucherDetail, transaction: transaction);
+                                        
+                                    if(voucher.idCurrency == currency.idCurrencyMain )
+                                    {
+                                        voucherDetail.amountAssetsAlt = voucherDetail.amountAssets / (double) voucher.tc;
+                                        voucherDetail.amountOwedAlt = voucherDetail.amountOwed / (double) voucher.tc;
+
+                                    }
+                                    else
+                                    {
+                                    var assets = voucherDetail.amountAssets;
+                                    var owed = voucherDetail.amountOwed;
+                                        //voucherDetail.amountAssetsAlt = voucherDetail.amountAssets * (double) voucher.tc;
+                                        //voucherDetail.amountOwedAlt= voucherDetail.amountOwed * (double) voucher.tc;
+                                       voucherDetail.amountAssetsAlt = voucherDetail.amountAssets;
+                                       voucherDetail.amountOwedAlt= voucherDetail.amountOwed ;
+
+                                    //------------------
+                                    voucherDetail.amountAssets = assets * (double)voucher.tc;
+                                    voucherDetail.amountOwed = owed * (double)voucher.tc;
+                                    }   
+                                    voucherDetail.idUser = 1;
+                                    voucherDTO.voucherDetail.Add(voucherDetail);
+                                    sqlConnection.Execute(sqlInsertVoucherDetail,voucherDetail, transaction: transaction);
                              }
                         transaction.Commit();
                            voucherDTO.response = new Response { Done =true,Message="Creado exitosamente",Value=0};

@@ -6,6 +6,7 @@ function getAccounts() {
     let url = "/Configuration/getAccounts"
     solicitudAjax(url, responseAccounts, {}, "JSON", "POST");
 
+
 }
 function checkIfExist() {
 
@@ -24,8 +25,16 @@ function responseCheckIfExist(responses) {
         $("#dropdownIt").val(configuration.idIt).change().change()
         $("#dropdownItPagar").val(configuration.idItToPay).change()
         $(`input[name=integration][value="${configuration.isIntegration}"]`).prop('checked',true)
+        let check = $("input[name=integration]:checked").val()
+        if (check ==='false') {
+            disableAll()
+        }
+
     } else {
-        console.log('no exist')
+         let check = $("input[name=integration]:checked").val()
+        if (check ==='false') {
+            disableAll()
+        }
     }
 }
 async function responseAccounts(response) {
@@ -41,13 +50,20 @@ async function responseAccounts(response) {
     await checkIfExist()
 }
 function makeDropdownAccount(name) {
-    let list =''
+    let list ='<option></option>'
     for (let i = 0; i < listAccounts.length; i++) {
         list += `<option value =${listAccounts[i].idAccount}> ${listAccounts[i].codeAccount+'-'+listAccounts[i].nameAccount
     }</option >`
     }
     $(`#${name}`).empty().append(list)
-    $(`#${name}`).select2()
+    $(`#${name}`).select2({
+        placeholder: "Seleccione una cuenta",
+        "language": {
+            "noResults": function () {
+                return "No se encontro la cuenta";
+            }
+        }
+    })
 
 }
 
@@ -71,9 +87,55 @@ function saveIntegration() {
         idItToPay,
         isIntegration
     }
-    console.log(data)
-    let url = "/Configuration/insertConfiguration"
-    solicitudAjax(url, responseSaveIntegration, data, "JSON", "POST");
+    let verify = [idCash, idFiscalCredit, idFiscalDebit, idPurchases, idSales, idIt, idItToPay]
+    if (verifyrepeat(verify)) {
+        console.log(data)
+        let url = "/Configuration/insertConfiguration"
+        solicitudAjax(url, responseSaveIntegration, data, "JSON", "POST");
+    }
+}
+function verifyrepeat(verify) {
+    let unique = verify.filter(onlyUnique);
+    console.log(unique)
+    if (unique.length == verify.length) {
+        return true
+    } else {
+        generadorAlertas('error', 'Error', "Existen cuentas repetidas")
+        return false
+    }
+ }
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+$('input[type=radio][name=integration]').change(function () {
+    let val = this.value
+    console.log(val)
+    if (val ==="false") {
+        console.log('enter')
+        disableAll()
+    } else {
+        enableAll()
+    }
+})
+
+function enableAll() {
+    $("#dropdownAccountCaja").attr("disabled", false)
+    $("#dropdownCreditoFiscal").attr('disabled', false)
+    $("#dropdownDebitoFiscal").attr('disabled',false)
+     $("#dropdownCompras").attr('disabled',false)
+     $("#dropdownVentas").attr('disabled',false)
+     $("#dropdownIt").attr('disabled',false)
+     $("#dropdownItPagar").attr('disabled',false)
+}
+function disableAll() {
+    $("#dropdownAccountCaja").attr("disabled", true)
+    $("#dropdownCreditoFiscal").attr('disabled', true)
+    $("#dropdownDebitoFiscal").attr('disabled',true)
+     $("#dropdownCompras").attr('disabled',true)
+     $("#dropdownVentas").attr('disabled',true)
+     $("#dropdownIt").attr('disabled',true)
+     $("#dropdownItPagar").attr('disabled',true)
+
 }
 
 function responseSaveIntegration(response) {
